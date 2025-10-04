@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "userId": "U001",
+      "name": "Amina Yusuf",
+      "email": "amina.yusuf@example.com",
+      "phone": "+2348012345678",
+      "role": "citizen"
+    }
+  ],
+  "complaints": [
+    {
+      "id": "1",
+      "complaintId": "C001",
+      "title": "Street lights out",
+      "description": "Street lights on Main Rd have been off for a week.",
+      "category": "Infrastructure",
+      "status": "pending",
+      "priority": "high",
+      "location": "Market Area",
+      "submittedBy": "U001",
+      "isPublic": true,
+      "votes": 7,
+      "response": "",
+      "createdAt": "2025-09-01T09:00:00Z",
+      "updatedAt": "2025-09-01T09:00:00Z"
+    }
+  ],
+  "reports": [
+    {
+      "id": "1",
+      "reportId": "R001",
+      "title": "Lost Digital ID",
+      "type": "Lost",
+      "status": "in_review",
+      "description": "I lost my Digital ID at the bus station.",
+      "location": "SomeCity Bus Station",
+      "reportedBy": "U001",
+      "priority": "medium",
+      "createdAt": "2025-09-02T12:00:00Z",
+      "updatedAt": "2025-09-02T12:00:00Z"
+    }
+  ],
+  "documents": [
+    {
+      "id": "1",
+      "fileName": "id_photo.jpg",
+      "fileType": "image/jpeg",
+      "associatedType": "report",
+      "associatedId": "R001",
+      "uploadedAt": "2025-09-02T12:01:00Z"
+    }
+  ]
+}
