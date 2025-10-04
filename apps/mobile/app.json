@@ -62,11 +62,16 @@
     },
     "extra": {
       "router": {
-        "origin": false
+        "origin": false,
+        "sitemap": false
+      },
+      "eas": {
+        "projectId": "a56282ec-acc7-4b08-bb39-a3c4ddd0062f"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    }
+    },
+    "owner": "ainfiniti"
   }
 }
