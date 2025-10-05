@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_hUSgZOLqmZ37vyxfXV7t5kUJUqvN",
+  "orgId": "team_Z4jCj64I2Bw4PVpWPPCJanxe",
+  "projectName": "natio-id",
+  "settings": {
+    "createdAt": 1759589812390,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": "npm install",
+    "buildCommand": "npm run build:prod",
+    "outputDirectory": "dist",
+    "rootDirectory": "apps/web",
+    "directoryListing": false,
+    "nodeVersion": "22.x"
+  }
+}
