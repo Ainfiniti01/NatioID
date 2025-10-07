@@ -1,8 +1,8 @@
 import path from 'node:path';
 import { reactRouter } from '@react-router/dev/vite';
 import { reactRouterHonoServer } from 'react-router-hono-server/dev';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import babel from 'vite-plugin-babel';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { addRenderIds } from './plugins/addRenderIds';
 import { aliases } from './plugins/aliases';
@@ -36,15 +36,7 @@ export default defineConfig({
   plugins: [
     nextPublicProcessEnv(),
     restartEnvFileChange(),
-    babel({
-      include: ['src/**/*.{js,jsx,ts,tsx}'], // or RegExp: /src\/.*\.[tj]sx?$/
-      exclude: /node_modules/, // skip everything else
-      babelConfig: {
-        babelrc: false, // don’t merge other Babel files
-        configFile: false,
-        plugins: ['styled-jsx/babel'],
-      },
-    }),
+    react(),
     restart({
       restart: [
         'src/**/page.jsx',
@@ -87,6 +79,13 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist'
+    outDir: 'build/client',
+    rollupOptions: {
+
+      // Vite automatically uses index.html as the entry point if it's in the root.
+      // Explicitly setting input to 'index.html' might be causing issues with module resolution.
+      // Let's remove it and rely on Vite's default behavior for SPA builds.
+      // If index.html is not found, Vite will look for it in the root of the project.
+    },
   }
 });
