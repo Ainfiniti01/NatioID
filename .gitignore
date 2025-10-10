@@ -28,3 +28,4 @@ out/
 *.apk
 *.aab
 *.keystore
+.vercel

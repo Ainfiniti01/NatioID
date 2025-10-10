@@ -42,7 +42,7 @@ export default function AdminDashboard() {
     { title: 'Voting Dashboard', href: '/admin/voting', icon: 'vote', color: 'blue' },
     { title: 'Applications Management', href: '/admin/applications', icon: 'clipboard', color: 'purple' },
     { title: 'Complaints Management', href: '/admin/complaints', icon: 'chat', color: 'orange' },
-    { title: 'Complaints Managements', href: '/complaints', icon: 'chat', color: 'orange' },
+    { title: 'Reports Management', href: '/complaints', icon: 'chat', color: 'orange' },
     { title: 'Applications Tracking', href: '/applications', icon: 'clipboard', color: 'purple' },
     { title: 'Chat', href: '/admin/chat', icon: 'chat', color: 'purple' },
     { title: 'System Logs', href: '/logs', icon: 'terminal', color: 'gray' },

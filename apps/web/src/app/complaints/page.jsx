@@ -152,7 +152,7 @@ export default function ComplaintsPage() {
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Complaint Management</h1>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Report Management</h1>
             </div>
             
             <div className="flex items-center space-x-4">
@@ -260,9 +260,9 @@ export default function ComplaintsPage() {
           </div>
         </div>
 
-        {/* Public Complaint Feed */}
+        {/* Public Report Feed */}
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Public Complaint Feed</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Public Report Feed</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {complaints.filter(c => c.isPublic).map(publicComplaint => (
               <div key={publicComplaint.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
@@ -299,7 +299,7 @@ export default function ComplaintsPage() {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                    Complaint
+                    Report ID & Title
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                     Submitter
