@@ -1,52 +1,84 @@
-import path from 'node:path';
-import { reactRouter } from '@react-router/dev/vite';
-import { reactRouterHonoServer } from 'react-router-hono-server/dev';
-import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import { addRenderIds } from './plugins/addRenderIds';
-import { aliases } from './plugins/aliases';
-import consoleToParent from './plugins/console-to-parent';
-import { layoutWrapperPlugin } from './plugins/layouts';
-import { loadFontsFromTailwindSource } from './plugins/loadFontsFromTailwindSource';
-import { nextPublicProcessEnv } from './plugins/nextPublicProcessEnv';
-import { restart } from './plugins/restart';
-import { restartEnvFileChange } from './plugins/restartEnvFileChange';
+import path from "node:path";
+import { defineConfig } from "vite";
+import babel from "vite-plugin-babel";
+import tsconfigPaths from "vite-tsconfig-paths";
+import { reactRouter } from "@react-router/dev/vite";
+import { reactRouterHonoServer } from "react-router-hono-server/dev";
+import { addRenderIds } from "./plugins/addRenderIds";
+import { aliases } from "./plugins/aliases";
+import consoleToParent from "./plugins/console-to-parent";
+import { layoutWrapperPlugin } from "./plugins/layouts";
+import { loadFontsFromTailwindSource } from "./plugins/loadFontsFromTailwindSource";
+import { nextPublicProcessEnv } from "./plugins/nextPublicProcessEnv";
+import { restart } from "./plugins/restart";
+import { restartEnvFileChange } from "./plugins/restartEnvFileChange";
+
+// ✅ Normalize Windows paths for consistency
+const resolvePath = (...segments: string[]) => path.resolve(process.cwd(), ...segments);
 
 export default defineConfig({
-  // Keep them available via import.meta.env.NEXT_PUBLIC_*
-  envPrefix: 'NEXT_PUBLIC_',
-  base: './',
+  envPrefix: "NEXT_PUBLIC_",
+
+  // ✅ Client build config
+  build: {
+    outDir: "build/client",
+    emptyOutDir: true,
+    sourcemap: false,
+    target: "esnext", // Enables modern syntax + top-level await
+  },
+
+  // ✅ SSR configuration for Node runtime
+  ssr: {
+    target: "node",
+    noExternal: ["react-router", "hono"],
+  },
+
   optimizeDeps: {
-    // Explicitly include fast-glob, since it gets dynamically imported and we
-    // don't want that to cause a re-bundle.
-    include: ['fast-glob', 'lucide-react'],
+    include: ["fast-glob", "lucide-react"],
     exclude: [
-      '@hono/auth-js/react',
-      '@hono/auth-js',
-      '@auth/core',
-      '@hono/auth-js',
-      'hono/context-storage',
-      '@auth/core/errors',
-      'fsevents',
-      'lightningcss',
+      "@hono/auth-js/react",
+      "@hono/auth-js",
+      "@auth/core",
+      "hono/context-storage",
+      "@auth/core/errors",
+      "fsevents",
+      "lightningcss",
     ],
   },
-  logLevel: 'info',
+
+  logLevel: "info",
+
   plugins: [
     nextPublicProcessEnv(),
     restartEnvFileChange(),
-    react(),
+
+    // ✅ Hono SSR integration — no `build` key inside
+    reactRouterHonoServer({
+      serverEntryPoint: "./__create/index.ts",
+      runtime: "node",
+    }),
+
+    babel({
+      include: ["src/**/*.{js,jsx,ts,tsx}"],
+      exclude: /node_modules/,
+      babelConfig: {
+        babelrc: false,
+        configFile: false,
+        plugins: ["styled-jsx/babel"],
+      },
+    }),
+
     restart({
       restart: [
-        'src/**/page.jsx',
-        'src/**/page.tsx',
-        'src/**/layout.jsx',
-        'src/**/layout.tsx',
-        'src/**/route.js',
-        'src/**/route.ts',
+        "src/**/page.jsx",
+        "src/**/page.tsx",
+        "src/**/layout.jsx",
+        "src/**/layout.tsx",
+        "src/**/route.js",
+        "src/**/route.ts",
       ],
     }),
+
     consoleToParent(),
     loadFontsFromTailwindSource(),
     addRenderIds(),
@@ -55,37 +87,32 @@ export default defineConfig({
     aliases(),
     layoutWrapperPlugin(),
   ],
+
   resolve: {
     alias: {
-      lodash: 'lodash-es',
-      'npm:stripe': 'stripe',
-      stripe: path.resolve(__dirname, './src/__create/stripe'),
-      '@auth/create/react': '@hono/auth-js/react',
-      '@auth/create': path.resolve(__dirname, './src/__create/@auth/create'),
-      '@': path.resolve(__dirname, 'src'),
+      lodash: "lodash-es",
+      "npm:stripe": "stripe",
+      stripe: resolvePath("src/__create/stripe"),
+      "@auth/create/react": "@hono/auth-js/react",
+      "@auth/create": resolvePath("src/__create/@auth/create"),
+      "@": resolvePath("src"),
     },
-    dedupe: ['react', 'react-dom'],
+    dedupe: ["react", "react-dom"],
   },
+
   clearScreen: false,
+
   server: {
     allowedHosts: true,
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     port: 4000,
-    hmr: {
-      overlay: false,
-    },
+    hmr: { overlay: false },
     warmup: {
-      clientFiles: ['./src/app/**/*', './src/app/root.tsx', './src/app/routes.ts'],
+      clientFiles: [
+        "./src/app/**/*",
+        "./src/app/root.tsx",
+        "./src/app/routes.ts",
+      ],
     },
   },
-  build: {
-    outDir: 'build/client',
-    rollupOptions: {
-
-      // Vite automatically uses index.html as the entry point if it's in the root.
-      // Explicitly setting input to 'index.html' might be causing issues with module resolution.
-      // Let's remove it and rely on Vite's default behavior for SPA builds.
-      // If index.html is not found, Vite will look for it in the root of the project.
-    },
-  }
 });
