@@ -3,14 +3,10 @@
   "builds": [
     {
       "src": "apps/web/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "apps/web/build/client" }
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "apps/web/build/client/$1" }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
