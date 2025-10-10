@@ -1,5 +1,16 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "apps/web/build/client",
-  "framework": "vite"
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/web/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "apps/web/build/client" }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "apps/web/build/client/$1" }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
