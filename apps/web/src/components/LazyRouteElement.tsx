@@ -5,7 +5,7 @@ interface LazyRouteElementProps {
 }
 
 const LazyRouteElement: React.FC<LazyRouteElementProps> = ({ componentPath }) => {
-  const LazyComponent = React.lazy(() => import(componentPath));
+    const LazyComponent = React.lazy(() => import(/* @vite-ignore */ componentPath));
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

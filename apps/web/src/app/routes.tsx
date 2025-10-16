@@ -43,6 +43,7 @@ const routes: RouteObject[] = generatedExtendedRoutes.map((extendedRoute) => {
     return {
       path: '/',
       element: <RedirectToAdminLogin />, // Use the statically imported component directly
+      file: extendedRoute.componentPath, // Add the file property
     };
   }
   return {

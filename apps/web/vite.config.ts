@@ -2,6 +2,7 @@ import path from "node:path";
 import { defineConfig } from "vite";
 import babel from "vite-plugin-babel";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { reactRouter } from "@react-router/dev/vite";
 import { addRenderIds } from "./plugins/addRenderIds";
 import { aliases } from "./plugins/aliases";
 import consoleToParent from "./plugins/console-to-parent";
@@ -70,6 +71,7 @@ base: "/",
     consoleToParent(),
     loadFontsFromTailwindSource(),
     addRenderIds(),
+    reactRouter(),
     tsconfigPaths(),
     aliases(),
     layoutWrapperPlugin(),
