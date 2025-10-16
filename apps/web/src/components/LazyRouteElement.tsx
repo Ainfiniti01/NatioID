@@ -1,24 +1,19 @@
 import React, { Suspense } from 'react';
+import { routeImportMap } from '../utils/routeImports';
 
 interface LazyRouteElementProps {
   componentPath: string;
 }
 
 const LazyRouteElement: React.FC<LazyRouteElementProps> = ({ componentPath }) => {
-  const getModulePath = (path: string) => {
-    // Remove leading './' if present
-    let cleanedPath = path.startsWith('./') ? path.substring(2) : path;
-    // Replace .jsx or .tsx with .js
-    cleanedPath = cleanedPath.replace(/\.(jsx|tsx)$/, '.js');
-    // Prepend /assets/ if not already present and it's a relative path
-    if (!cleanedPath.startsWith('/')) {
-      cleanedPath = `/assets/${cleanedPath}`;
-    }
-    return cleanedPath;
-  };
+  const importFn = routeImportMap[componentPath as keyof typeof routeImportMap];
 
-  const modulePath = getModulePath(componentPath);
-  const LazyComponent = React.lazy(() => import(/* @vite-ignore */ modulePath));
+  if (!importFn) {
+    console.error(`Unknown componentPath: ${componentPath}`);
+    return <div>Error: Component not found</div>;
+  }
+
+  const LazyComponent = React.lazy(importFn);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
