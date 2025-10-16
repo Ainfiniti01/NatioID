@@ -11,7 +11,7 @@ type ExtendedRouteConfig = {
 // Manually define the routes based on the previous App.tsx and file structure
 const generatedExtendedRoutes: ExtendedRouteConfig[] = [
   // Redirect from root to /admin/login
-  { path: '/', componentPath: 'src/components/RedirectToAdminLogin.jsx' }, // Use the new path for the redirect component
+  { path: '/', componentPath: '@/components/RedirectToAdminLogin.jsx' }, // Use the new path for the redirect component
   { path: '/admin/applications', componentPath: './admin/applications/page.jsx' },
   { path: '/admin/change-password', componentPath: './admin/change-password/page.jsx' },
   { path: '/admin/chat', componentPath: './admin/chat/page.jsx' },
