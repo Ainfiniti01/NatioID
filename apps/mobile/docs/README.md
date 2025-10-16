@@ -124,9 +124,9 @@ Enhancing cross-app sync with the NatioID Web portal.
 Please refer to the main project’s CONTRIBUTING.md for more information.
 
 👨‍💻 Author
-Abdulazeez Adam
+Abdulazeez Adam.A
 Lead Developer – NatioID Project
-Email: [your contact or placeholder]
+Email: abdulazeezadam09@gmail.com
 GitHub: https://github.com/Ainfiniti01
 
 📜 License

@@ -157,8 +157,8 @@ This project is for educational and presentation purposes.
 All rights reserved © 2025 NatioID.
 
 🧠 Author
-Abdulazeez Adam
+Abdulazeez Adam.A
 Project Lead & Full-Stack Developer
-Email: [your email or contact link]
+Email: abdulazeezadam09@gmail.com
 GitHub: https://github.com/Ainfiniti01
 
