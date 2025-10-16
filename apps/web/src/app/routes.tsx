@@ -1,5 +1,6 @@
 import { type RouteObject, redirect } from 'react-router-dom'; // Import redirect
 import LazyRouteElement from '../components/LazyRouteElement'; // Import the new component
+import RedirectToAdminLogin from './RedirectToAdminLogin'; // Statically import the component
 
 // Define an intermediate type to hold both the RouteConfigEntry and its componentPath
 type ExtendedRouteConfig = {
@@ -41,8 +42,7 @@ const routes: RouteObject[] = generatedExtendedRoutes.map((extendedRoute) => {
   if (extendedRoute.path === '/') {
     return {
       path: '/',
-      element: <LazyRouteElement componentPath={extendedRoute.componentPath} />,
-      file: extendedRoute.componentPath, // Provide a dummy file path for the redirect route
+      element: <RedirectToAdminLogin />, // Use the statically imported component directly
     };
   }
   return {
