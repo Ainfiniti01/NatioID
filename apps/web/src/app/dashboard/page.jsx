@@ -1,12 +1,14 @@
+'use client';
 import { useState } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function AdminDashboard() {
-  const [darkMode, setDarkMode] = useState(false);
+  const { darkMode, toggleDarkMode } = useTheme();
   const [activeTimeFilter, setActiveTimeFilter] = useState('week');
 
   const stats = [
     {
-      title: 'Total Users',
+      title: 'Total Citizens',
       value: '12,543',
       change: '+12%',
       changeType: 'increase',
@@ -123,9 +125,9 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg">
+      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg">
         <div className="flex items-center justify-center h-16 px-4 bg-[#004040]">
           <h1 className="text-xl font-bold text-white">Admin Portal</h1>
         </div>
@@ -144,7 +146,7 @@ export default function AdminDashboard() {
               <a
                 key={link.title}
                 href={link.href}
-                className="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                className="text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
               >
                 <div className="mr-3 h-6 w-6">
                   {getIcon(link.icon)}
@@ -153,16 +155,16 @@ export default function AdminDashboard() {
               </a>
             ))}
             
-            <hr className="my-4" />
+            <hr className="my-4 border-gray-200 dark:border-gray-700" />
             
-            <a href="/settings" className="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+            <a href="/settings" className="text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md">
               {getIcon('settings')}
               <span className="ml-3">Settings</span>
             </a>
             
             <button 
               onClick={() => window.location.href = '/'}
-              className="w-full text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+              className="w-full text-left text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md"
             >
               {getIcon('logout')}
               <span className="ml-3">Logout</span>
@@ -174,19 +176,19 @@ export default function AdminDashboard() {
       {/* Main content */}
       <div className="pl-64">
         {/* Top bar */}
-        <div className="bg-white shadow">
+        <div className="bg-white dark:bg-gray-800 shadow">
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center">
-                <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
+                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Dashboard</h1>
               </div>
               
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500">Theme:</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Theme:</span>
                   <button
-                    onClick={() => setDarkMode(!darkMode)}
-                    className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#004040] focus:ring-offset-2"
+                    onClick={toggleDarkMode}
+                    className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-[#004040] dark:focus:ring-[#ECBE07] focus:ring-offset-2"
                   >
                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${darkMode ? 'translate-x-6' : 'translate-x-1'}`} />
                   </button>
@@ -194,8 +196,8 @@ export default function AdminDashboard() {
                 
                 <div className="flex items-center">
                   <div className="text-sm">
-                    <div className="font-medium text-gray-700">Admin User</div>
-                    <div className="text-gray-500">admin@example.com</div>
+                    <div className="font-medium text-gray-700 dark:text-gray-200">Admin User</div>
+                    <div className="text-gray-500 dark:text-gray-400">admin@example.com</div>
                   </div>
                   <div className="ml-3 h-8 w-8 rounded-full bg-[#004040] flex items-center justify-center">
                     <span className="text-sm font-medium text-white">A</span>
@@ -219,7 +221,7 @@ export default function AdminDashboard() {
                     className={`px-3 py-1 text-sm rounded-md ${
                       activeTimeFilter === filter
                         ? 'bg-[#004040] text-white'
-                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                     }`}
                   >
                     {filter.charAt(0).toUpperCase() + filter.slice(1)}
@@ -231,7 +233,7 @@ export default function AdminDashboard() {
             {/* Stats grid */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
               {stats.map((stat) => (
-                <div key={stat.title} className="bg-white overflow-hidden shadow rounded-lg">
+                <div key={stat.title} className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
                   <div className="p-5">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
@@ -241,9 +243,9 @@ export default function AdminDashboard() {
                       </div>
                       <div className="ml-5 w-0 flex-1">
                         <dl>
-                          <dt className="text-sm font-medium text-gray-500 truncate">{stat.title}</dt>
+                          <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{stat.title}</dt>
                           <dd>
-                            <div className="text-lg font-medium text-gray-900">{stat.value}</div>
+                            <div className="text-lg font-medium text-gray-900 dark:text-white">{stat.value}</div>
                           </dd>
                         </dl>
                       </div>
@@ -258,31 +260,51 @@ export default function AdminDashboard() {
 
             {/* Charts placeholder */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <div className="bg-white shadow rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">User Registration Trends</h3>
-                <div className="h-64 bg-gray-100 rounded flex items-center justify-center">
-                  <p className="text-gray-500">Chart placeholder - User registrations over time</p>
+              <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">User Registration Trends</h3>
+                <div className="h-64 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center p-4">
+                  {/* Dummy Bar Chart */}
+                  <svg viewBox="0 0 100 100" className="w-full h-full">
+                    <rect x="10" y="30" width="15" height="70" fill="#4CAF50" />
+                    <rect x="30" y="50" width="15" height="50" fill="#2196F3" />
+                    <rect x="50" y="20" width="15" height="80" fill="#FFC107" />
+                    <rect x="70" y="60" width="15" height="40" fill="#FF5722" />
+                    <text x="17" y="25" fontSize="8" textAnchor="middle" fill="#333">Jan</text>
+                    <text x="37" y="45" fontSize="8" textAnchor="middle" fill="#333">Feb</text>
+                    <text x="57" y="15" fontSize="8" textAnchor="middle" fill="#333">Mar</text>
+                    <text x="77" y="55" fontSize="8" textAnchor="middle" fill="#333">Apr</text>
+                  </svg>
                 </div>
               </div>
               
-              <div className="bg-white shadow rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Application Status Distribution</h3>
-                <div className="h-64 bg-gray-100 rounded flex items-center justify-center">
-                  <p className="text-gray-500">Chart placeholder - Application statuses</p>
+              <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Application Status Distribution</h3>
+                <div className="h-64 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center p-4">
+                  {/* Dummy Pie Chart */}
+                  <svg viewBox="0 0 100 100" className="w-full h-full">
+                    <circle cx="50" cy="50" r="40" fill="#4CAF50" />
+                    <path d="M50 50 L50 10 A40 40 0 0 1 84.64 30 L50 50 Z" fill="#2196F3" />
+                    <path d="M50 50 L84.64 30 A40 40 0 0 1 84.64 70 L50 50 Z" fill="#FFC107" />
+                    <path d="M50 50 L84.64 70 A40 40 0 0 1 50 90 L50 50 Z" fill="#FF5722" />
+                    <text x="65" y="20" fontSize="8" textAnchor="middle" fill="#333">25%</text>
+                    <text x="80" y="50" fontSize="8" textAnchor="middle" fill="#333">30%</text>
+                    <text x="65" y="80" fontSize="8" textAnchor="middle" fill="#333">20%</text>
+                    <text x="35" y="50" fontSize="8" textAnchor="middle" fill="#333">50%</text>
+                  </svg>
                 </div>
               </div>
             </div>
 
             {/* Quick actions */}
-            <div className="bg-white shadow rounded-lg">
+            <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Quick Actions</h3>
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                   {quickLinks.map((link) => (
                     <a
                       key={link.title}
                       href={link.href}
-                      className="relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#004040] hover:bg-gray-50 rounded-lg border border-gray-200"
+                      className="relative group bg-white dark:bg-gray-800 p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-[#004040] hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-700"
                     >
                       <div>
                         <span className={`rounded-lg inline-flex p-3 ring-4 ring-white ${getColorClasses(link.color)}`}>
@@ -290,7 +312,7 @@ export default function AdminDashboard() {
                         </span>
                       </div>
                       <div className="mt-4">
-                        <h3 className="text-sm font-medium text-gray-900">
+                        <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                           <span className="absolute inset-0" aria-hidden="true" />
                           {link.title}
                         </h3>

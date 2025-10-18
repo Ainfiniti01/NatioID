@@ -1,5 +1,6 @@
 module.exports = {
 	content: ['./src/**/*.{js,ts,jsx,tsx}'],
+	darkMode: 'class', // Enable dark mode based on the 'dark' class
 	theme: {
 		fontFamily: {
 			sans: ['Inter', 'sans-serif'],

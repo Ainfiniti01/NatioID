@@ -136,32 +136,32 @@ const AdminChatPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#004040]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <button
                 onClick={() => window.history.back()}
-                className="mr-4 text-gray-600 hover:text-gray-900"
+                className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
-              <h1 className="text-xl font-semibold text-gray-900">Admin Chat Dashboard</h1>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Admin Chat Dashboard</h1>
             </div>
             <div className="flex items-center space-x-4">
               {selectedChat && (
                 <button
                   onClick={() => setShowUserInfo(!showUserInfo)}
-                  className="text-gray-600 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100"
+                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
                   title={showUserInfo ? "Hide User Info" : "Show User Info"}
                 >
                   {showUserInfo ? <X className="h-5 w-5" /> : <Info className="h-5 w-5" />}
@@ -169,7 +169,7 @@ const AdminChatPage = () => {
               )}
               <button
                 onClick={() => alert('More options')}
-                className="text-gray-600 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100"
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
                 title="More Options"
               >
                 <MoreVertical className="h-5 w-5" />
@@ -182,8 +182,8 @@ const AdminChatPage = () => {
       {/* Main Content Area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar: Conversations List */}
-        <div className={`w-full md:w-1/4 bg-white border-r border-gray-200 flex flex-col ${selectedChat && 'hidden md:flex'}`}>
-          <div className="p-4 border-b border-gray-200">
+        <div className={`w-full md:w-1/4 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col ${selectedChat && 'hidden md:flex'}`}>
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <div className="relative mb-3">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
@@ -191,7 +191,7 @@ const AdminChatPage = () => {
                 placeholder="Search chats..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004040] focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#004040] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
             <div className="flex space-x-2">
@@ -200,7 +200,7 @@ const AdminChatPage = () => {
                   key={f}
                   onClick={() => setFilter(f)}
                   className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${
-                    filter === f ? 'bg-[#004040] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    filter === f ? 'bg-[#004040] text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {f}
@@ -210,21 +210,21 @@ const AdminChatPage = () => {
           </div>
           <div className="flex-1 overflow-y-auto">
             {filteredConversations.length === 0 ? (
-              <p className="text-center text-gray-500 p-4">No conversations found.</p>
+              <p className="text-center text-gray-500 dark:text-gray-400 p-4">No conversations found.</p>
             ) : (
               filteredConversations.map(chat => (
                 <div
                   key={chat.id}
                   onClick={() => setSelectedChat(chat)}
-                  className={`flex items-center p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 ${selectedChat?.id === chat.id ? 'bg-gray-100' : ''}`}
+                  className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 ${selectedChat?.id === chat.id ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
                 >
                   <img src={chat.userAvatar} alt={chat.userName} className="h-10 w-10 rounded-full mr-3" />
                   <div className="flex-1">
                     <div className="flex justify-between items-center">
-                      <h3 className="font-semibold text-gray-900">{chat.userName}</h3>
-                      <span className="text-xs text-gray-500">{formatTimestamp(chat.lastMessageTimestamp)}</span>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{chat.userName}</h3>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">{formatTimestamp(chat.lastMessageTimestamp)}</span>
                     </div>
-                    <p className="text-sm text-gray-600 truncate">{chat.lastMessage}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 truncate">{chat.lastMessage}</p>
                     <div className="flex items-center justify-between mt-1">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(chat.status)}`}>
                         {chat.status}
@@ -243,34 +243,34 @@ const AdminChatPage = () => {
         </div>
 
         {/* Main Panel: Chat Window */}
-        <div className={`flex-1 flex flex-col bg-gray-100 ${!selectedChat && 'hidden md:flex'}`}>
+        <div className={`flex-1 flex flex-col bg-gray-100 dark:bg-gray-900 ${!selectedChat && 'hidden md:flex'}`}>
           {!selectedChat ? (
-            <div className="flex-1 flex items-center justify-center text-gray-500">
+            <div className="flex-1 flex items-center justify-center text-gray-500 dark:text-gray-400">
               <MessageSquare className="h-12 w-12 mr-2" />
               Select a chat to start messaging
             </div>
           ) : (
             <>
               {/* Chat Window Header */}
-              <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+              <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
                 <div className="flex items-center">
                   <button
                     onClick={() => setSelectedChat(null)}
-                    className="md:hidden mr-3 text-gray-600 hover:text-gray-900"
+                    className="md:hidden mr-3 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
                   >
                     <ArrowLeft className="h-5 w-5" />
                   </button>
                   <img src={selectedChat.userAvatar} alt={selectedChat.userName} className="h-10 w-10 rounded-full mr-3" />
                   <div>
-                    <h3 className="font-semibold text-gray-900">{selectedChat.userName}</h3>
-                    <p className="text-sm text-gray-600">Online</p> {/* Placeholder for online status */}
+                    <h3 className="font-semibold text-gray-900 dark:text-white">{selectedChat.userName}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Online</p> {/* Placeholder for online status */}
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="text-gray-600 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100" title="Quick Replies">
+                  <button className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700" title="Quick Replies">
                     <Smile className="h-5 w-5" />
                   </button>
-                  <button className="text-gray-600 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100" title="Escalate">
+                  <button className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700" title="Escalate">
                     <AlertTriangle className="h-5 w-5" />
                   </button>
                 </div>
@@ -283,13 +283,13 @@ const AdminChatPage = () => {
                     <div className={`max-w-[70%] p-3 rounded-lg ${
                       message.sender === 'user'
                         ? 'bg-[#004040] text-white rounded-br-none'
-                        : 'bg-white text-gray-800 rounded-bl-none shadow'
+                        : 'bg-white dark:bg-gray-700 text-gray-800 dark:text-white rounded-bl-none shadow'
                     }`}>
                       {message.attachment && (
                         <img src={message.attachment} alt="Attachment" className="max-w-full h-auto rounded-md mb-2" />
                       )}
                       <p className="text-sm">{message.text}</p>
-                      <span className={`text-xs mt-1 block ${message.sender === 'user' ? 'text-gray-200' : 'text-gray-500'} text-right`}>
+                      <span className={`text-xs mt-1 block ${message.sender === 'user' ? 'text-gray-200' : 'text-gray-500 dark:text-gray-400'} text-right`}>
                         {formatTimestamp(message.timestamp)}
                       </span>
                     </div>
@@ -298,12 +298,12 @@ const AdminChatPage = () => {
               </div>
 
               {/* Message Input */}
-              <div className="bg-white border-t border-gray-200 p-4 flex items-center">
-                <button className="text-gray-600 hover:text-gray-900 p-2 rounded-full hover:bg-gray-100" title="Attach File">
+              <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 flex items-center">
+                <button className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700" title="Attach File">
                   <Paperclip className="h-5 w-5" />
                 </button>
                 <textarea
-                  className="flex-1 mx-3 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#004040] focus:border-transparent resize-none"
+                  className="flex-1 mx-3 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#004040] focus:border-transparent resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="Type a message..."
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}
@@ -324,32 +324,32 @@ const AdminChatPage = () => {
 
         {/* Right Sidebar: User Info Panel */}
         {selectedChat && showUserInfo && (
-          <div className="w-full md:w-1/4 bg-white border-l border-gray-200 flex flex-col p-4">
-            <h3 className="font-semibold text-lg text-gray-900 mb-4 border-b pb-2">User Information</h3>
+          <div className="w-full md:w-1/4 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col p-4">
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-4 border-b pb-2 border-gray-200 dark:border-gray-700">User Information</h3>
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-500">Full Name</p>
-                <p className="font-medium text-gray-900">{selectedChat.user.fullName}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Full Name</p>
+                <p className="font-medium text-gray-900 dark:text-white">{selectedChat.user.fullName}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Contact Details</p>
-                <p className="font-medium text-gray-900">{selectedChat.user.contact.email}</p>
-                <p className="font-medium text-gray-900">{selectedChat.user.contact.phone}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Contact Details</p>
+                <p className="font-medium text-gray-900 dark:text-white">{selectedChat.user.contact.email}</p>
+                <p className="font-medium text-gray-900 dark:text-white">{selectedChat.user.contact.phone}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Document Summary</p>
-                <p className="font-medium text-gray-900">{selectedChat.user.documentSummary}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Document Summary</p>
+                <p className="font-medium text-gray-900 dark:text-white">{selectedChat.user.documentSummary}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Support History</p>
-                <ul className="list-disc list-inside text-gray-900">
+                <p className="text-sm text-gray-500 dark:text-gray-400">Support History</p>
+                <ul className="list-disc list-inside text-gray-900 dark:text-white">
                   {selectedChat.user.supportHistory.map((item, i) => (
                     <li key={i} className="text-sm">{item}</li>
                   ))}
                 </ul>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Actions</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Actions</p>
                 <div className="space-y-2 mt-1">
                   {selectedChat.user.actions.map((action, i) => (
                     <button key={i} className="w-full text-left text-sm text-[#004040] hover:text-[#003030] font-medium">
@@ -359,8 +359,8 @@ const AdminChatPage = () => {
                 </div>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Linked Documents</p>
-                <ul className="list-disc list-inside text-gray-900">
+                <p className="text-sm text-gray-500 dark:text-gray-400">Linked Documents</p>
+                <ul className="list-disc list-inside text-gray-900 dark:text-white">
                   {selectedChat.user.linkedDocuments.map((doc, i) => (
                     <li key={i} className="text-sm text-[#004040] hover:underline cursor-pointer">{doc}</li>
                   ))}
