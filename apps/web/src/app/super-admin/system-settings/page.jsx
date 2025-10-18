@@ -18,13 +18,23 @@ import {
   Lock,
   Database,
   Mail,
+  ArrowLeft,
+  Moon,
   Smartphone
 } from 'lucide-react';
-import { useTheme } from '../../../context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function SystemSettingsPage() {
-  const { darkMode } = useTheme();
+  const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('branding');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -36,8 +46,8 @@ export default function SystemSettingsPage() {
 
   const [settings, setSettings] = useState({
     branding: {
-      primaryColor: darkMode ? defaultSecondaryColor : defaultPrimaryColor,
-      secondaryColor: darkMode ? defaultPrimaryColor : defaultSecondaryColor,
+      primaryColor: isDarkMode ? defaultSecondaryColor : defaultPrimaryColor,
+      secondaryColor: isDarkMode ? defaultPrimaryColor : defaultSecondaryColor,
       logoUrl: '/logo.jpg',
       systemName: 'NatioID',
       tagline: 'Digital Identity for All Countrys'
@@ -160,7 +170,7 @@ export default function SystemSettingsPage() {
               value={settings.branding.primaryColor}
               onChange={(e) => handleSettingChange('branding', 'primaryColor', e.target.value)}
               className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              placeholder={darkMode ? defaultSecondaryColor : defaultPrimaryColor}
+              placeholder={isDarkMode ? defaultSecondaryColor : defaultPrimaryColor}
             />
           </div>
         </div>
@@ -179,7 +189,7 @@ export default function SystemSettingsPage() {
               value={settings.branding.secondaryColor}
               onChange={(e) => handleSettingChange('branding', 'secondaryColor', e.target.value)}
               className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              placeholder={darkMode ? defaultPrimaryColor : defaultSecondaryColor}
+              placeholder={isDarkMode ? defaultPrimaryColor : defaultSecondaryColor}
             />
           </div>
         </div>
@@ -514,25 +524,36 @@ export default function SystemSettingsPage() {
                 onClick={() => window.location.href = '/super-admin/dashboard'}
                 className="mr-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
-                <Shield className="h-6 w-6 text-red-600 dark:text-[#ECBE07]" />
+                <ArrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-300" />
               </button>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">System Settings</h1>
             </div>
             <p className="text-gray-600 dark:text-gray-300">Configure global system settings and preferences</p>
           </div>
           
-          <button 
-            onClick={handleSaveSettings}
-            disabled={isSaving}
-            className="bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] flex items-center transition-colors disabled:opacity-50"
-          >
-            {isSaving ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white dark:border-black mr-2"></div>
-            ) : (
-              <Save className="h-4 w-4 mr-2" />
-            )}
-            {isSaving ? 'Saving...' : 'Save Settings'}
-          </button>
+          <div className="flex items-center space-x-4">
+            {/* Theme Toggle */}
+            <button 
+              onClick={() => toggleDarkMode(!isDarkMode)}
+              className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
+              title="Toggle theme"
+            >
+              {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
+
+            <button 
+              onClick={handleSaveSettings}
+              disabled={isSaving}
+              className="bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] flex items-center transition-colors disabled:opacity-50"
+            >
+              {isSaving ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white dark:border-black mr-2"></div>
+              ) : (
+                <Save className="h-4 w-4 mr-2" />
+              )}
+              {isSaving ? 'Saving...' : 'Save Settings'}
+            </button>
+          </div>
         </div>
 
         {/* Success Message */}

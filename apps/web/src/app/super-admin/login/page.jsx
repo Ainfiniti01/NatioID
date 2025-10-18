@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTheme } from "@/context/ThemeContext";
 import { 
   Shield, 
   Eye, 
@@ -13,11 +14,20 @@ import {
 } from 'lucide-react';
 
 export default function SuperAdminLoginPage() {
+  const { isDarkMode } = useTheme();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     twoFactorCode: ''
   });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState(1); // 1: credentials, 2: 2FA
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +74,7 @@ export default function SuperAdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black dark:from-gray-950 dark:via-black dark:to-gray-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Logo and Header */}
         <div className="text-center mb-8">
@@ -91,7 +101,7 @@ export default function SuperAdminLoginPage() {
         )}
 
         {/* Login Form */}
-        <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-gray-800 dark:bg-gray-900 border border-gray-700 dark:border-gray-700 rounded-2xl p-8 shadow-2xl">
           {step === 1 ? (
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="text-center mb-6">
@@ -115,7 +125,7 @@ export default function SuperAdminLoginPage() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-700 dark:bg-gray-800 border border-gray-600 dark:border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="superadmin@example.com"
                     required
                   />
@@ -132,7 +142,7 @@ export default function SuperAdminLoginPage() {
                     type={showPassword ? 'text' : 'password'}
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
-                    className="w-full pl-10 pr-12 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    className="w-full pl-10 pr-12 py-3 bg-gray-700 dark:bg-gray-800 border border-gray-600 dark:border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="Enter your secure password"
                     required
                   />
@@ -187,7 +197,7 @@ export default function SuperAdminLoginPage() {
                   onChange={(e) =>
                     handleInputChange('twoFactorCode', e.target.value.replace(/\D/g, '').slice(0, 6))
                   }
-                  className="w-full py-3 px-4 bg-gray-700 border border-gray-600 rounded-lg text-white text-center text-2xl font-mono placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent tracking-widest"
+                  className="w-full py-3 px-4 bg-gray-700 dark:bg-gray-800 border border-gray-600 dark:border-gray-700 rounded-lg text-white text-center text-2xl font-mono placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent tracking-widest"
                   placeholder="000000"
                   maxLength={6}
                   required
@@ -198,7 +208,7 @@ export default function SuperAdminLoginPage() {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="flex-1 bg-gray-700 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all"
+                  className="flex-1 bg-gray-700 dark:bg-gray-800 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all"
                 >
                   Back
                 </button>
@@ -221,7 +231,7 @@ export default function SuperAdminLoginPage() {
           )}
 
           {/* Security Notice */}
-          <div className="mt-6 pt-6 border-t border-gray-700">
+          <div className="mt-6 pt-6 border-t border-gray-700 dark:border-gray-700">
             <div className="flex items-start space-x-3">
               <CheckCircle className="h-5 w-5 text-green-400 mt-0.5" />
               <div>
@@ -236,7 +246,7 @@ export default function SuperAdminLoginPage() {
 
         {/* Additional Security Info */}
         <div className="text-center mt-6">
-          <p className="text-gray-500 text-xs">
+          <p className="text-gray-500 dark:text-gray-400 text-xs">
             Unauthorized access attempts are logged and reported.
             <br />
             For assistance, contact: <span className="text-red-400">security@natioid.gov.ng</span>

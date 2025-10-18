@@ -24,8 +24,10 @@ import {
   Sun,
   ArrowLeft
 } from 'lucide-react';
+import { useTheme } from "@/context/ThemeContext";
 
 export default function SettingsPage() {
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [activeTab, setActiveTab] = useState('general');
   const [settings, setSettings] = useState({
     general: {
@@ -61,7 +63,7 @@ export default function SettingsPage() {
       lastBackup: '2025-09-11T02:00:00Z'
     },
     appearance: {
-      theme: 'system',
+      theme: isDarkMode ? 'dark' : 'light', // Initialize with current theme context
       primaryColor: '#004040',
       secondaryColor: '#ECBE07',
       compactMode: false,
@@ -75,29 +77,15 @@ export default function SettingsPage() {
       lastSync: '2025-09-11T10:30:00Z'
     }
   });
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [saveStatus, setSaveStatus] = useState('');
 
   useEffect(() => {
-    // Load theme preference
-    const theme = localStorage.getItem('adminTheme') || 'light';
-    setIsDarkMode(theme === 'dark');
-    setSettings(prev => ({
-      ...prev,
-      appearance: { ...prev.appearance, theme }
-    }));
-  }, []);
-
-  const toggleTheme = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('adminTheme', newMode ? 'dark' : 'light');
-    document.documentElement.classList.toggle('dark', newMode);
-    setSettings(prev => ({
-      ...prev,
-      appearance: { ...prev.appearance, theme: newMode ? 'dark' : 'light' }
-    }));
-  };
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   const handleSettingChange = (category, key, value) => {
     setSettings(prev => ({
@@ -190,22 +178,13 @@ export default function SettingsPage() {
             </div>
             
             <div className="flex items-center space-x-4">
-              {/* Theme Toggle */}
+              {/* Export Settings */}
               <button 
-                onClick={toggleTheme}
+                onClick={toggleDarkMode}
                 className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
                 title="Toggle theme"
               >
                 {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-              </button>
-
-              {/* Export Settings */}
-              <button 
-                onClick={handleExportSettings}
-                className="flex items-center space-x-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"
-              >
-                <Download className="h-4 w-4" />
-                <span>Export</span>
               </button>
 
               {/* Save Button */}
@@ -562,12 +541,12 @@ export default function SettingsPage() {
                         value={settings.appearance.theme}
                         onChange={(e) => {
                           handleSettingChange('appearance', 'theme', e.target.value);
-                          if (e.target.value !== 'system') {
-                            const isDark = e.target.value === 'dark';
-                            setIsDarkMode(isDark);
-                            localStorage.setItem('adminTheme', e.target.value);
-                            document.documentElement.classList.toggle('dark', isDark);
+                          if (e.target.value === 'dark') {
+                            toggleDarkMode(true);
+                          } else if (e.target.value === 'light') {
+                            toggleDarkMode(false);
                           }
+                          // If 'system' is selected, the useEffect will handle it based on system preference
                         }}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#004040] dark:focus:ring-[#ECBE07] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                       >

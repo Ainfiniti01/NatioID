@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTheme } from "@/context/ThemeContext";
 import { 
   Shield, 
   ArrowLeft, 
@@ -23,12 +24,22 @@ import {
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router'; // Using react-router for routing
 
+
 export default function AdminDetailPage() {
+  const { isDarkMode } = useTheme();
   const navigate = useNavigate();
   const params = useParams();
   const adminId = params.id; // Get admin ID from URL
   const [admin, setAdmin] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState(''); // This will now hold the generated temp password
   const [confirmPassword, setConfirmPassword] = useState(''); // Not used for reset, but keeping for consistency if needed elsewhere
@@ -177,10 +188,10 @@ export default function AdminDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading admin details...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 dark:border-[#ECBE07] mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300">Loading admin details...</p>
         </div>
       </div>
     );
@@ -188,14 +199,14 @@ export default function AdminDetailPage() {
 
   if (!admin) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
         <div className="text-center">
-          <UserX className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Admin Not Found</h3>
-          <p className="text-gray-500">The requested admin account could not be found.</p>
+          <UserX className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Admin Not Found</h3>
+          <p className="text-gray-500 dark:text-gray-400">The requested admin account could not be found.</p>
           <button
             onClick={() => navigate('/super-admin/admin-accounts')}
-            className="mt-6 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+            className="mt-6 bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] transition-colors"
           >
             Go to Admin Accounts
           </button>
@@ -205,21 +216,21 @@ export default function AdminDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
             <div className="flex items-center mb-2">
               <button
-                onClick={() => navigate('/super-admin/admin-accounts')}
-                className="mr-4 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => window.history.back()}
+                className="mr-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
-                <ArrowLeft className="h-6 w-6 text-gray-600" />
+                <ArrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-300" />
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Details: {admin.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Details: {admin.name}</h1>
             </div>
-            <p className="text-gray-600">Detailed view and management for {admin.name}</p>
+            <p className="text-gray-600 dark:text-gray-300">Detailed view and management for {admin.name}</p>
           </div>
           
           <div className="flex space-x-3">
@@ -229,14 +240,14 @@ export default function AdminDetailPage() {
                 handleEditAdmin(admin);
                 setShowActionMenu(null);
               }}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center transition-colors"
+              className="bg-blue-600 dark:bg-[#ECBE07] text-white dark:text-black px-4 py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-[#D4AA06] flex items-center transition-colors"
             >
               <Edit3 className="h-4 w-4 mr-2" />
               Edit Admin
             </button>
             <button 
               onClick={handleResetPassword}
-              className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 flex items-center transition-colors"
+              className="bg-orange-600 dark:bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-700 dark:hover:bg-orange-600 flex items-center transition-colors"
             >
               <Key className="h-4 w-4 mr-2" />
               Reset Password
@@ -244,7 +255,7 @@ export default function AdminDetailPage() {
             {admin.status === 'Active' ? (
               <button
                 onClick={handleSuspendAdmin}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center transition-colors"
+                className="bg-red-600 dark:bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-red-600 flex items-center transition-colors"
               >
                 <UserX className="h-4 w-4 mr-2" />
                 Suspend Admin
@@ -252,7 +263,7 @@ export default function AdminDetailPage() {
             ) : (
               <button
                 onClick={handleReactivateAdmin}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center transition-colors"
+                className="bg-green-600 dark:bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-600 flex items-center transition-colors"
               >
                 <UserCheck className="h-4 w-4 mr-2" />
                 Reactivate Admin
@@ -260,7 +271,7 @@ export default function AdminDetailPage() {
             )}
             <button
               onClick={handleDeleteAdmin}
-              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center transition-colors"
+              className="bg-gray-600 dark:bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 flex items-center transition-colors"
             >
               <Trash2 className="h-4 w-4 mr-2" />
               Delete Admin
@@ -269,64 +280,64 @@ export default function AdminDetailPage() {
         </div>
 
         {/* Admin Details Card */}
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Admin Information</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Admin Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <User className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <User className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Full Name:</span> {admin.name}
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Mail className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Mail className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Email:</span> {admin.email}
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Phone className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Phone className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Phone:</span> {admin.phone}
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Briefcase className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Briefcase className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Department:</span> {admin.department}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Shield className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Shield className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Role:</span> 
                 <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRoleColor(admin.role)}`}>
                   {admin.role}
                 </span>
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <CheckCircle className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <CheckCircle className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Status:</span> 
                 <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(admin.status)}`}>
                   {admin.status}
                 </span>
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Calendar className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Joined:</span> {admin.joinedDate}
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Clock className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Clock className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Last Login:</span> {admin.lastLogin}
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Calendar className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Joined:</span> {admin.joinedDate}
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Clock className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Clock className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Last Login:</span> {admin.lastLogin}
               </p>
-              <p className="text-sm text-gray-600 flex items-center mb-2">
-                <Key className="h-4 w-4 mr-2 text-gray-500" />
+              <p className="text-sm text-gray-600 dark:text-gray-300 flex items-center mb-2">
+                <Key className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
                 <span className="font-medium">Password Status:</span>
                 <span className="ml-2">
                   {admin.lastPasswordChange ? `Last changed: ${admin.lastPasswordChange}` : 'Never changed'}
-                  {admin.requiresReset && <span className="ml-2 text-orange-600">(Requires reset on next login)</span>}
+                  {admin.requiresReset && <span className="ml-2 text-orange-600 dark:text-orange-400">(Requires reset on next login)</span>}
                 </span>
               </p>
             </div>
@@ -334,14 +345,14 @@ export default function AdminDetailPage() {
         </div>
 
         {/* Admin Activity Summary (Placeholder) */}
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Activity Summary</h2>
-          <p className="text-gray-600">Total actions performed: <span className="font-bold">{admin.totalActions}</span></p>
-          <p className="text-gray-500 text-sm mt-2">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Activity Summary</h2>
+          <p className="text-gray-600 dark:text-gray-300">Total actions performed: <span className="font-bold">{admin.totalActions}</span></p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
             Detailed activity logs can be viewed in the{" "}
             <button 
               onClick={() => navigate('/super-admin/activity-logs')}
-              className="text-blue-600 hover:underline"
+              className="text-blue-600 dark:text-blue-400 hover:underline"
             >
               Activity Logs
             </button>{" "}section.
@@ -351,29 +362,29 @@ export default function AdminDetailPage() {
         {/* Reset Password Modal */}
         {showResetPasswordModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Reset Password for {admin.name}</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Reset Password for {admin.name}</h2>
               <div className="space-y-4">
-                <p className="text-gray-700">
+                <p className="text-gray-700 dark:text-gray-300">
                   A new temporary password has been generated. Please share it securely with the admin.
                 </p>
-                <div className="relative flex items-center border border-gray-300 rounded-lg p-3 bg-gray-50">
+                <div className="relative flex items-center border border-gray-300 dark:border-gray-600 rounded-lg p-3 bg-gray-50 dark:bg-gray-700">
                   <input
                     type={showNewPassword ? 'text' : 'password'}
                     value={generatedTempPassword}
                     readOnly
-                    className="w-full bg-transparent outline-none text-gray-900 font-mono pr-10"
+                    className="w-full bg-transparent outline-none text-gray-900 dark:text-white font-mono pr-10"
                   />
                   <span
                     className="absolute right-10 pr-3 flex items-center cursor-pointer"
                     onClick={() => setShowNewPassword(!showNewPassword)}
                   >
-                    {showNewPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+                    {showNewPassword ? <EyeOff className="h-5 w-5 text-gray-500 dark:text-gray-400" /> : <Eye className="h-5 w-5 text-gray-500 dark:text-gray-400" />}
                   </span>
                   <button
                     type="button"
                     onClick={handleCopyPassword}
-                    className="absolute right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                    className="absolute right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                     title="Copy password"
                   >
                     <Clipboard className="h-5 w-5" />
@@ -386,32 +397,32 @@ export default function AdminDetailPage() {
                     id="forceReset"
                     checked={forcePasswordReset}
                     onChange={(e) => setForcePasswordReset(e.target.checked)}
-                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-red-600 dark:text-[#ECBE07] focus:ring-red-500 dark:focus:ring-[#ECBE07] border-gray-300 dark:border-gray-600 rounded"
                   />
-                  <label htmlFor="forceReset" className="ml-2 block text-sm text-gray-900">
+                  <label htmlFor="forceReset" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
                     Force password reset on next login
                   </label>
                 </div>
 
                 {/* Dummy Email Preview */}
-                <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 mt-4">
-                  <h3 className="text-md font-semibold text-gray-800 flex items-center mb-2">
+                <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 mt-4">
+                  <h3 className="text-md font-semibold text-gray-800 dark:text-white flex items-center mb-2">
                     <Mail className="h-4 w-4 mr-2" /> Email Preview (Dummy)
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     Subject: Your Password Has Been Reset
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     Dear {admin.name},
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     Your password for the NatioID Admin Portal has been reset by a Super Admin.
                     Your temporary password is: <span className="font-bold">{generatedTempPassword}</span>
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     Please log in using this temporary password. {forcePasswordReset && "You will be prompted to change it upon your first login."}
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                     For security reasons, please do not share this password.
                   </p>
                 </div>
@@ -420,14 +431,14 @@ export default function AdminDetailPage() {
                   <button
                     type="button"
                     onClick={() => setShowResetPasswordModal(false)}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+                    className="flex-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
                     onClick={handlePasswordResetConfirm}
-                    className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
+                    className="flex-1 bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black py-2 px-4 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] transition-colors"
                   >
                     Confirm Reset
                   </button>
@@ -440,46 +451,46 @@ export default function AdminDetailPage() {
         {/* Edit Admin Modal */}
         {showEditAdminModal && editAdminData && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Edit Admin: {editAdminData.name}</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Edit Admin: {editAdminData.name}</h2>
               <form className="space-y-4" onSubmit={handleSaveEditedAdmin}>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
                   <input
                     type="text"
                     value={editAdminData.name}
                     onChange={(e) => setEditAdminData({ ...editAdminData, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="Enter full name"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
                   <input
                     type="email"
                     value={editAdminData.email}
                     onChange={(e) => setEditAdminData({ ...editAdminData, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="admin@natioid.gov.ng"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
                   <input
                     type="tel"
                     value={editAdminData.phone}
                     onChange={(e) => setEditAdminData({ ...editAdminData, phone: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="+234 800 000 0000"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role</label>
                   <select
                     value={editAdminData.role}
                     onChange={(e) => setEditAdminData({ ...editAdminData, role: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="Manager">Manager</option>
                     <option value="Admin">Admin</option>
@@ -488,11 +499,11 @@ export default function AdminDetailPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department</label>
                   <select
                     value={editAdminData.department}
                     onChange={(e) => setEditAdminData({ ...editAdminData, department: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="">Select Department</option>
                     <option value="ID Management">ID Management</option>
@@ -510,13 +521,13 @@ export default function AdminDetailPage() {
                       setShowEditAdminModal(false);
                       setEditAdminData(null);
                     }}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+                    className="flex-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
+                    className="flex-1 bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black py-2 px-4 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] transition-colors"
                   >
                     Save Changes
                   </button>

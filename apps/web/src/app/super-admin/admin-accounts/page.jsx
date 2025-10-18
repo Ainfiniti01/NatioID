@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTheme } from "@/context/ThemeContext";
 import { 
   Shield, 
   Users, 
@@ -13,6 +14,7 @@ import {
   UserX,
   UserCheck,
   Eye,
+  EyeOff,
   Mail,
   Phone,
   Clock,
@@ -20,13 +22,23 @@ import {
   CheckCircle,
   User,
   Clipboard,
+  ArrowLeft ,
   RefreshCw
 } from 'lucide-react';
 
 export default function AdminAccountsPage() {
+  const { isDarkMode } = useTheme();
   const [admins, setAdmins] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   const [selectedRole, setSelectedRole] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
@@ -213,37 +225,37 @@ export default function AdminAccountsPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading admin accounts...</p>
-        </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 dark:border-[#ECBE07] mx-auto mb-4"></div>
+        <p className="text-gray-600 dark:text-gray-300">Loading admin accounts...</p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
             <div className="flex items-center mb-2">
               <button
-                onClick={() => window.location.href = '/super-admin/dashboard'}
-                className="mr-4 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                onClick={() => window.history.back()}
+                className="mr-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
-                <Shield className="h-6 w-6 text-red-600" />
+                <ArrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-300" />
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Accounts Management</h1>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Accounts Management</h1>
             </div>
-            <p className="text-gray-600">Manage admin accounts, roles, and permissions</p>
+            <p className="text-gray-600 dark:text-gray-300">Manage admin accounts, roles, and permissions</p>
           </div>
           
           <button 
             onClick={handleAddAdmin}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 flex items-center transition-colors"
+            className="bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] flex items-center transition-colors"
           >
             <Plus className="h-4 w-4 mr-2" />
             Add New Admin
@@ -251,7 +263,7 @@ export default function AdminAccountsPage() {
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8 border border-gray-200 dark:border-gray-700">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -260,14 +272,14 @@ export default function AdminAccountsPage() {
                 placeholder="Search admins..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             </div>
 
             <select
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="all">All Roles</option>
               <option value="Manager">Manager</option>
@@ -279,7 +291,7 @@ export default function AdminAccountsPage() {
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
             >
               <option value="all">All Status</option>
               <option value="Active">Active</option>
@@ -287,7 +299,7 @@ export default function AdminAccountsPage() {
               <option value="Inactive">Inactive</option>
             </select>
 
-            <div className="text-sm text-gray-500 flex items-center">
+            <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
               <Filter className="h-4 w-4 mr-2" />
               {filteredAdmins.length} of {admins.length} admins
             </div>
@@ -295,33 +307,33 @@ export default function AdminAccountsPage() {
         </div>
 
         {/* Admins Table */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Login</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Admin</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Department</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Last Login</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"></th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {filteredAdmins.map((admin) => (
-                  <tr key={admin.id} className="hover:bg-gray-50">
+                  <tr key={admin.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center">
-                            <User className="h-5 w-5 text-red-600" />
+                          <div className="h-10 w-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center">
+                            <User className="h-5 w-5 text-red-600 dark:text-red-400" />
                           </div>
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{admin.name}</div>
-                          <div className="text-sm text-gray-500">{admin.email}</div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">{admin.name}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{admin.email}</div>
                         </div>
                       </div>
                     </td>
@@ -330,7 +342,7 @@ export default function AdminAccountsPage() {
                         {admin.role}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                       {admin.department}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -338,33 +350,33 @@ export default function AdminAccountsPage() {
                         {admin.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       <div className="flex items-center">
                         <Clock className="h-4 w-4 mr-1" />
                         {admin.lastLogin}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {admin.totalActions} actions
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="relative">
                         <button
                           onClick={() => setShowActionMenu(showActionMenu === admin.id ? null : admin.id)}
-                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                         >
-                          <MoreVertical className="h-4 w-4" />
+                          <MoreVertical className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                         </button>
 
                         {showActionMenu === admin.id && (
-                          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10">
+                          <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg border border-gray-200 dark:border-gray-600 z-10">
                             <div className="py-1">
                               <button
                                 onClick={() => {
                                   window.location.href = `/super-admin/admin-detail/${admin.id}`;
                                   setShowActionMenu(null);
                                 }}
-                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 w-full text-left"
                               >
                                 <Eye className="h-4 w-4 mr-2" />
                                 View Details
@@ -374,7 +386,7 @@ export default function AdminAccountsPage() {
                                   handleEditAdmin(admin);
                                   setShowActionMenu(null);
                                 }}
-                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 w-full text-left"
                               >
                                 <Edit3 className="h-4 w-4 mr-2" />
                                 Edit Admin
@@ -385,7 +397,7 @@ export default function AdminAccountsPage() {
                                     handleSuspendAdmin(admin.id);
                                     setShowActionMenu(null);
                                   }}
-                                  className="flex items-center px-4 py-2 text-sm text-orange-600 hover:bg-orange-50 w-full text-left"
+                                  className="flex items-center px-4 py-2 text-sm text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-gray-600 w-full text-left"
                                 >
                                   <UserX className="h-4 w-4 mr-2" />
                                   Suspend Admin
@@ -396,7 +408,7 @@ export default function AdminAccountsPage() {
                                     handleReactivateAdmin(admin.id);
                                     setShowActionMenu(null);
                                   }}
-                                  className="flex items-center px-4 py-2 text-sm text-green-600 hover:bg-green-50 w-full text-left"
+                                  className="flex items-center px-4 py-2 text-sm text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-gray-600 w-full text-left"
                                 >
                                   <UserCheck className="h-4 w-4 mr-2" />
                                   Reactivate Admin
@@ -407,7 +419,7 @@ export default function AdminAccountsPage() {
                                   handleDeleteAdmin(admin.id);
                                   setShowActionMenu(null);
                                 }}
-                                className="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left"
+                                className="flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-600 w-full text-left"
                               >
                                 <Trash2 className="h-4 w-4 mr-2" />
                                 Delete Admin
@@ -425,9 +437,9 @@ export default function AdminAccountsPage() {
 
           {filteredAdmins.length === 0 && (
             <div className="text-center py-12">
-              <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No admins found</h3>
-              <p className="text-gray-500">Try adjusting your search criteria or add a new admin.</p>
+              <Users className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No admins found</h3>
+              <p className="text-gray-500 dark:text-gray-400">Try adjusting your search criteria or add a new admin.</p>
             </div>
           )}
         </div>
@@ -435,8 +447,8 @@ export default function AdminAccountsPage() {
         {/* Add/Edit Admin Modal */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                 {selectedAdmin ? 'Edit Admin' : 'Add New Admin'}
               </h2>
 
@@ -523,45 +535,45 @@ export default function AdminAccountsPage() {
                 setAdminFormDepartment('');
               }}>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
                   <input
                     type="text"
                     value={adminFormName}
                     onChange={(e) => setAdminFormName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="Enter full name"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
                   <input
                     type="email"
                     value={adminFormEmail}
                     onChange={(e) => setAdminFormEmail(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="admin@natioid.gov.ng"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
                   <input
                     type="tel"
                     value={adminFormPhone}
                     onChange={(e) => setAdminFormPhone(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     placeholder="+234 800 000 0000"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role</label>
                   <select
                     value={adminFormRole}
                     onChange={(e) => setAdminFormRole(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="Manager">Manager</option>
                     <option value="Admin">Admin</option>
@@ -571,11 +583,11 @@ export default function AdminAccountsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Department</label>
                   <select
                     value={adminFormDepartment}
                     onChange={(e) => setAdminFormDepartment(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     <option value="">Select Department</option>
                     <option value="ID Management">ID Management</option>
@@ -590,13 +602,13 @@ export default function AdminAccountsPage() {
                 {!selectedAdmin && ( // Only show password fields for new admin creation
                   <>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
                       <div className="relative">
                         <input
                           type={showNewAdminPassword ? 'text' : 'password'}
                           value={newAdminPassword}
                           onChange={(e) => setNewAdminPassword(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 pr-10"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] pr-10 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                           placeholder="Enter password"
                           required
                         />
@@ -604,18 +616,18 @@ export default function AdminAccountsPage() {
                           className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                           onClick={() => setShowNewAdminPassword(!showNewAdminPassword)}
                         >
-                          {showNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+                          {showNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500 dark:text-gray-400" /> : <Eye className="h-5 w-5 text-gray-500 dark:text-gray-400" />}
                         </span>
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
                       <div className="relative">
                         <input
                           type={showConfirmNewAdminPassword ? 'text' : 'password'}
                           value={confirmNewAdminPassword}
                           onChange={(e) => setConfirmNewAdminPassword(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 pr-10"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] pr-10 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                           placeholder="Confirm password"
                           required
                         />
@@ -623,7 +635,7 @@ export default function AdminAccountsPage() {
                           className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                           onClick={() => setShowConfirmNewAdminPassword(!showConfirmNewAdminPassword)}
                         >
-                          {showConfirmNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+                          {showConfirmNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500 dark:text-gray-400" /> : <Eye className="h-5 w-5 text-gray-500 dark:text-gray-400" />}
                         </span>
                       </div>
                       {passwordError && <p className="text-red-500 text-xs mt-1">{passwordError}</p>}
@@ -636,7 +648,7 @@ export default function AdminAccountsPage() {
                         setConfirmNewAdminPassword(generatedPassword);
                         alert('Password auto-generated. Please copy it securely.');
                       }}
-                      className="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors flex items-center justify-center"
+                      className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center justify-center"
                     >
                       <RefreshCw className="h-4 w-4 mr-2" />
                       Auto-generate Password
@@ -645,41 +657,41 @@ export default function AdminAccountsPage() {
                 )}
 
                 {selectedAdmin && ( // Only show change password section for editing existing admin
-                  <div className="border-t border-gray-200 pt-4 mt-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Change Admin Password</h3>
+                  <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Change Admin Password</h3>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
                       <div className="relative">
                         <input
                           type={showNewAdminPassword ? 'text' : 'password'}
                           value={newAdminPassword}
                           onChange={(e) => setNewAdminPassword(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 pr-10"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] pr-10 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                           placeholder="Enter new password"
                         />
                         <span
                           className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                           onClick={() => setShowNewAdminPassword(!showNewAdminPassword)}
                         >
-                          {showNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+                          {showNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500 dark:text-gray-400" /> : <Eye className="h-5 w-5 text-gray-500 dark:text-gray-400" />}
                         </span>
                       </div>
                     </div>
                     <div className="mt-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm New Password</label>
                       <div className="relative">
                         <input
                           type={showConfirmNewAdminPassword ? 'text' : 'password'}
                           value={confirmNewAdminPassword}
                           onChange={(e) => setConfirmNewAdminPassword(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 pr-10"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 dark:focus:ring-[#ECBE07] pr-10 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                           placeholder="Confirm new password"
                         />
                         <span
                           className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
                           onClick={() => setShowConfirmNewAdminPassword(!showConfirmNewAdminPassword)}
                         >
-                          {showConfirmNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+                          {showConfirmNewAdminPassword ? <EyeOff className="h-5 w-5 text-gray-500 dark:text-gray-400" /> : <Eye className="h-5 w-5 text-gray-500 dark:text-gray-400" />}
                         </span>
                       </div>
                       {passwordError && <p className="text-red-500 text-xs mt-1">{passwordError}</p>}
@@ -697,13 +709,13 @@ export default function AdminAccountsPage() {
                       setConfirmNewAdminPassword('');
                       setPasswordError('');
                     }}
-                    className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+                    className="flex-1 bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 px-4 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
+                    className="flex-1 bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black py-2 px-4 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] transition-colors"
                   >
                     {selectedAdmin ? 'Update Admin' : 'Create Admin'}
                   </button>
@@ -716,17 +728,17 @@ export default function AdminAccountsPage() {
         {/* Temporary Password Popup */}
         {showTemporaryPasswordPopup && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Admin Account Created!</h2>
-              <p className="text-gray-700 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Admin Account Created!</h2>
+              <p className="text-gray-700 dark:text-gray-300 mb-4">
                 Admin account created successfully. Here is the temporary password:
               </p>
-              <div className="relative flex items-center border border-gray-300 rounded-lg p-3 bg-gray-50 mb-4">
+              <div className="relative flex items-center border border-gray-300 dark:border-gray-600 rounded-lg p-3 bg-gray-50 dark:bg-gray-700 mb-4">
                 <input
                   type="text"
                   value={newlyCreatedAdminPassword}
                   readOnly
-                  className="w-full bg-transparent outline-none text-gray-900 font-mono pr-10"
+                  className="w-full bg-transparent outline-none text-gray-900 dark:text-white font-mono pr-10"
                 />
                 <button
                   type="button"
@@ -734,35 +746,35 @@ export default function AdminAccountsPage() {
                     navigator.clipboard.writeText(newlyCreatedAdminPassword);
                     alert('Temporary password copied to clipboard!');
                   }}
-                  className="absolute right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                  className="absolute right-0 pr-3 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                   title="Copy password"
                 >
                   <Clipboard className="h-5 w-5" />
                 </button>
               </div>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                 Instruction: "Share this securely. It will not be shown again."
               </p>
 
               {/* Dummy Email Preview */}
-              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 mt-4">
-                <h3 className="text-md font-semibold text-gray-800 flex items-center mb-2">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700 mt-4">
+                <h3 className="text-md font-semibold text-gray-800 dark:text-white flex items-center mb-2">
                   <Mail className="h-4 w-4 mr-2" /> Email Preview (Dummy)
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Subject: Welcome to NatioID Admin Portal - Your New Account
                 </p>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Dear New Admin,
                 </p>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Your account for the NatioID Admin Portal has been created.
                   Your temporary password is: <span className="font-bold">{newlyCreatedAdminPassword}</span>
                 </p>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   Please log in using this temporary password. You will be prompted to change it upon your first login.
                 </p>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   For security reasons, please do not share this password.
                 </p>
               </div>
@@ -771,7 +783,7 @@ export default function AdminAccountsPage() {
                 <button
                   type="button"
                   onClick={() => setShowTemporaryPasswordPopup(false)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                  className="bg-red-600 dark:bg-[#ECBE07] text-white dark:text-black px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-[#D4AA06] transition-colors"
                 >
                   Close
                 </button>
@@ -782,49 +794,49 @@ export default function AdminAccountsPage() {
 
         {/* Summary Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Admins</p>
-                <p className="text-2xl font-bold text-gray-900">{admins.length}</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Admins</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{admins.length}</p>
               </div>
-              <Users className="h-8 w-8 text-blue-600" />
+              <Users className="h-8 w-8 text-blue-600 dark:text-blue-400" />
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Active</p>
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Active</p>
+                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                   {admins.filter(a => a.status === 'Active').length}
                 </p>
               </div>
-              <UserCheck className="h-8 w-8 text-green-600" />
+              <UserCheck className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Suspended</p>
-                <p className="text-2xl font-bold text-red-600">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Suspended</p>
+                <p className="text-2xl font-bold text-red-600 dark:text-red-400">
                   {admins.filter(a => a.status === 'Suspended').length}
                 </p>
               </div>
-              <UserX className="h-8 w-8 text-red-600" />
+              <UserX className="h-8 w-8 text-red-600 dark:text-red-400" />
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Actions</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Actions</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {admins.reduce((sum, admin) => sum + admin.totalActions, 0).toLocaleString()}
                 </p>
               </div>
-              <CheckCircle className="h-8 w-8 text-purple-600" />
+              <CheckCircle className="h-8 w-8 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
         </div>

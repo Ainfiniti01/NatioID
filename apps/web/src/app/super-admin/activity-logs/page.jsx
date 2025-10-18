@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { ArrowLeft } from 'lucide-react';
 import LogPage from '../../../components/LogPage';
 
 export default function ActivityLogs() {
@@ -171,11 +172,24 @@ export default function ActivityLogs() {
   };
 
   return (
-    <LogPage
-      logs={logs}
-      stats={stats}
-      title="Admin Activity Logs"
-      dataSource="admin"
-    />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center mb-6">
+          <button
+            onClick={() => window.history.back()}
+            className="mr-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+          </button>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Activity Logs</h1>
+        </div>
+        <LogPage
+          logs={logs}
+          stats={stats}
+          title="Admin Activity Logs"
+          dataSource="admin"
+        />
+      </div>
+    </div>
   );
 }
