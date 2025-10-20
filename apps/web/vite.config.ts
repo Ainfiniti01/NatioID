@@ -28,8 +28,7 @@ base: "/",
     },
   },
 
-  // ✅ No SSR
-  // ssr: false,
+  //  ssr: false,
 
   optimizeDeps: {
     include: ["fast-glob", "lucide-react"],
