@@ -1,6 +1,7 @@
 import { type RouteObject, redirect } from 'react-router-dom'; // Import redirect
 import LazyRouteElement from '../components/LazyRouteElement'; // Import the new component
 import RedirectToAdminLogin from './RedirectToAdminLogin'; // Statically import the component
+import CreateDefaultNotFoundPage, { loader as notFoundLoader } from './__create/not-found'; // Statically import the not-found component and its loader
 
 // Define an intermediate type to hold both the RouteConfigEntry and its componentPath
 type ExtendedRouteConfig = {
@@ -41,7 +42,6 @@ const generatedExtendedRoutes: ExtendedRouteConfig[] = [
   { path: 'super-admin/dashboard', componentPath: 'super-admin/dashboard/page.jsx' },
   { path: 'super-admin/login', componentPath: 'super-admin/login/page.jsx' },
   { path: 'super-admin/system-settings', componentPath: 'super-admin/system-settings/page.jsx' },
-  { path: '*', componentPath: '__create/not-found.tsx' },
 ];
 
 // Convert generated routes to RouteObject[]
@@ -59,6 +59,14 @@ const routes: RouteObject[] = generatedExtendedRoutes.map((extendedRoute) => {
     element: <LazyRouteElement componentPath={extendedRoute.componentPath} />,
     file: extendedRoute.componentPath,
   };
+});
+
+// Add the not-found route separately to ensure its loader is called
+routes.push({
+  path: '*',
+  element: <CreateDefaultNotFoundPage />,
+  loader: notFoundLoader,
+  file: '__create/not-found.tsx',
 });
 
 export default routes;
