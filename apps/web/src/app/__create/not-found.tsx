@@ -18,6 +18,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   };
 }
 
+
 interface ParentSitemap {
   webPages?: Array<{
     id: string;
