@@ -225,10 +225,10 @@ While this version focuses on presentation and UI, contributions are welcome for
 
 ## 📌 Disclaimer
 
-> **Disclaimer:**  
-> This project is a working prototype developed solely for presentation and proposal purposes.  
-> All features, content, and functionalities are intended for demonstration only and may not represent a final or deployable product.  
-> Please contact the author before any reuse, sharing, or distribution.
+ **Disclaimer:**  
+* This project is a working prototype developed solely for presentation and proposal purposes.  
+* All features, content, and functionalities are intended for demonstration only and may not represent a final or deployable product.  
+* Please contact the author before any reuse, sharing, or distribution.
 
 ---
 

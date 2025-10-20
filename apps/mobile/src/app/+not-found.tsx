@@ -27,6 +27,9 @@ function NotFoundScreen() {
   const expoSitemap = useSitemap();
   const [sitemap, setSitemap] = useState<SitemapType | ParentSitemap | null>(expoSitemap);
 
+  // Add a check to ensure params is not undefined before accessing its properties
+  const missingPath = params && params['not-found']?.[0] || '';
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.parent && window.parent !== window) {
       const handler = (event: MessageEvent) => {
@@ -51,7 +54,7 @@ function NotFoundScreen() {
   }, []);
 
   const isExpoSitemap = sitemap === expoSitemap;
-  const missingPath = params['not-found']?.[0] || '';
+  // const missingPath = params['not-found']?.[0] || ''; // Removed duplicate declaration
 
   const availableRoutes = useMemo(() => {
     return (
