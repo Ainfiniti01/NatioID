@@ -16,7 +16,10 @@ const resolvePath = (...segments: string[]) => path.resolve(process.cwd(), ...se
 
 export default defineConfig({
   envPrefix: "NEXT_PUBLIC_",
-base: "/",
+  base: "/",
+  define: {
+    'process.platform': JSON.stringify('web'), // Define process.platform for browser environment
+  },
   // ✅ Build output for static hosting
   build: {
     outDir: "build/client",
