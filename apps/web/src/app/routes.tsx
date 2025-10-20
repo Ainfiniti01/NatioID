@@ -1,8 +1,6 @@
 import { type RouteObject, redirect } from 'react-router-dom'; // Import redirect
 import LazyRouteElement from '../components/LazyRouteElement'; // Import the new component
 import RedirectToAdminLogin from './RedirectToAdminLogin'; // Statically import the component
-import CreateDefaultNotFoundPage from './__create/not-found'; // Statically import the not-found component
-import { loader as notFoundLoader } from './__create/not-found-loader'; // Statically import the not-found loader
 
 // Define an intermediate type to hold both the RouteConfigEntry and its componentPath
 type ExtendedRouteConfig = {
@@ -14,13 +12,11 @@ type ExtendedRouteConfig = {
 // Manually define the routes based on the previous App.tsx and file structure
 const generatedExtendedRoutes: ExtendedRouteConfig[] = [
   // Redirect from root to /admin/login
-  { path: '/', componentPath: '../app/RedirectToAdminLogin.jsx' },
   { path: 'admin/applications', componentPath: 'admin/applications/page.jsx' },
   { path: 'admin/change-password', componentPath: 'admin/change-password/page.jsx' },
   { path: 'admin/chat', componentPath: 'admin/chat/page.jsx' },
   { path: 'admin/complaints', componentPath: 'admin/complaints/page.jsx' },
-  // { path: 'admin/login', componentPath: 'admin/login/page.jsx' },
-  { path: '/admin/login', componentPath: '../app/admin/login/page.jsx' },
+  { path: 'admin/login', componentPath: 'admin/login/page.jsx' },
   { path: 'admin/users', componentPath: 'admin/users/page.jsx' },
   { path: 'admin/voting', componentPath: 'admin/voting/page.jsx' },
   { path: 'admin/voting/:id/results', componentPath: 'admin/voting/MonitorLiveResultPage.jsx' },
@@ -43,6 +39,7 @@ const generatedExtendedRoutes: ExtendedRouteConfig[] = [
   { path: 'super-admin/dashboard', componentPath: 'super-admin/dashboard/page.jsx' },
   { path: 'super-admin/login', componentPath: 'super-admin/login/page.jsx' },
   { path: 'super-admin/system-settings', componentPath: 'super-admin/system-settings/page.jsx' },
+  { path: '*', componentPath: '__create/not-found.tsx' },
 ];
 
 // Convert generated routes to RouteObject[]
@@ -60,14 +57,6 @@ const routes: RouteObject[] = generatedExtendedRoutes.map((extendedRoute) => {
     element: <LazyRouteElement componentPath={extendedRoute.componentPath} />,
     file: extendedRoute.componentPath,
   };
-});
-
-// Add the not-found route separately to ensure its loader is called
-routes.push({
-  path: '*',
-  element: <CreateDefaultNotFoundPage />,
-  loader: notFoundLoader,
-  file: '__create/not-found.tsx',
 });
 
 export default routes;
