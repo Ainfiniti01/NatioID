@@ -1,23 +1,6 @@
-import fg from 'fast-glob';
-import type { Route } from './+types/not-found';
 import { useNavigate, useLoaderData } from 'react-router'; // Add useLoaderData
 import { useCallback, useEffect, useState } from 'react';
-
-export async function loader({ params }: Route.LoaderArgs) {
-  const matches = await fg('src/**/page.{js,jsx,ts,tsx}');
-  return {
-    path: `/${params['*']}`,
-    pages: matches
-      .sort((a, b) => a.length - b.length)
-      .map((match) => {
-        const url = match.replace('src/app', '').replace(/\/page\.(js|jsx|ts|tsx)$/, '') || '/';
-        const path = url.replaceAll('[', '').replaceAll(']', '');
-        const displayPath = path === '/' ? 'Homepage' : path;
-        return { url, path: displayPath };
-      }),
-  };
-}
-
+import { loader as notFoundLoader } from './not-found-loader'; // Import the loader from the new file
 
 interface ParentSitemap {
   webPages?: Array<{
@@ -29,7 +12,7 @@ interface ParentSitemap {
 }
 
 export default function CreateDefaultNotFoundPage() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>; // Use useLoaderData hook
+  const loaderData = useLoaderData() as Awaited<ReturnType<typeof notFoundLoader>>; // Use useLoaderData hook and the new loader
   const [siteMap, setSitemap] = useState<ParentSitemap | null>(null);
   const navigate = useNavigate();
 

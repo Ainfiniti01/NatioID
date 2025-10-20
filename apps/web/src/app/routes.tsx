@@ -1,7 +1,8 @@
 import { type RouteObject, redirect } from 'react-router-dom'; // Import redirect
 import LazyRouteElement from '../components/LazyRouteElement'; // Import the new component
 import RedirectToAdminLogin from './RedirectToAdminLogin'; // Statically import the component
-import CreateDefaultNotFoundPage, { loader as notFoundLoader } from './__create/not-found'; // Statically import the not-found component and its loader
+import CreateDefaultNotFoundPage from './__create/not-found'; // Statically import the not-found component
+import { loader as notFoundLoader } from './__create/not-found-loader'; // Statically import the not-found loader
 
 // Define an intermediate type to hold both the RouteConfigEntry and its componentPath
 type ExtendedRouteConfig = {
