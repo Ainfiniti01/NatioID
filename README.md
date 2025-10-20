@@ -1,4 +1,6 @@
-  # NatioID – Digital ID Management System
+# NatioID – Digital ID Management System
+
+This document outlines the super admin functionalities.
 
 **NatioID** is a modern digital identity management system featuring a responsive **React (Vite)** web interface and a companion **mobile application (APK)**.
 It enables administrators and citizens to manage identification records, view applications, and interact with a unified national identity platform — all through a fast, accessible, and scalable frontend.
@@ -7,7 +9,7 @@ It enables administrators and citizens to manage identification records, view ap
 
 ## 🚀 Live Demo Links
 - **Web App**: [https://natio-id.vercel.app/](https://natio-id.vercel.app/)
-- **Mobile App**: [APK download or Expo link (coming soon)](https://expo.dev/accounts/ainfiniti/projects/natioid/builds/f66d46db-007c-4da7-9cda-db6db180115e)
+- **Mobile App**: [APK download](https://expo.dev/accounts/ainfiniti/projects/natioid/builds/f66d46db-007c-4da7-9cda-db6db180115e)
 
 ---
 
@@ -157,7 +159,7 @@ This project is configured for static hosting on Vercel.
 *   **Framework Preset**: Other
 *   **Root Directory**: `apps/web`
 *   **Build Command**: `npm run build`
-*   **Output Directory**: `build/client` (or `dist` depending on Vite config)
+*   **Output Directory**: `apps/web/build/client` (or `dist` depending on Vite config)
 *   **Install Command**: `npm install`
 
 **`vercel.json`**
@@ -199,6 +201,25 @@ While this version focuses on presentation and UI, contributions are welcome for
 *   Backend integration
 *   API layer improvements
 *   Mobile-Web synchronization
+
+## 📸 Visual Example
+
+![Admin Dash 2](docs/screenshots/Admin-dash2.jpg)
+![Admin Dashboard](docs/screenshots/Admin-Dashboard.jpg)
+![Admin Login](docs/screenshots/Admin-Login.jpg)
+![Admin User Management](docs/screenshots/Admin-user-management.jpg)
+![Campaign](docs/screenshots/campaign.jpg)
+![Dashboard](docs/screenshots/dashboard.jpg)
+![Election Management](docs/screenshots/Election-management.jpg)
+![ID Page](docs/screenshots/ID--page.jpg)
+![ID Preview](docs/screenshots/ID-preview.jpg)
+![Light Dashboard](docs/screenshots/light-dashboard.jpg)
+![Live Result](docs/screenshots/Live-result.jpg)
+![Login](docs/screenshots/Login.jpg)
+![Profile](docs/screenshots/profile.jpg)
+![Services](docs/screenshots/services.jpg)
+![Super Admin](docs/screenshots/Super-Admin.jpg)
+![Theme](docs/screenshots/Theme.jpg)
 
 ---
 

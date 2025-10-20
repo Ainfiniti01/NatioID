@@ -1,4 +1,6 @@
- 📱 NatioID Mobile Application
+📱 NatioID Mobile Application
+
+This document is for the super admin.
 
 The **NatioID Mobile App** is a companion to the NatioID web portal — providing citizens with a portable, secure, and user-friendly interface for managing their **Digital Citizen ID** and related services.
 
@@ -8,7 +10,7 @@ This application is built with **React Native (Expo)** and designed to work seam
 
 ## 🚀 Live Demo Links
 - **Web App**: [https://natio-id.vercel.app/](https://natio-id.vercel.app/)
-- **Mobile App**: [APK download or Expo link (coming soon)](https://expo.dev/accounts/ainfiniti/projects/natioid/builds/f66d46db-007c-4da7-9cda-db6db180115e)
+- **Mobile App**: [APK download](https://expo.dev/accounts/ainfiniti/projects/natioid/builds/f66d46db-007c-4da7-9cda-db6db180115e)
 
 ---
 
@@ -18,6 +20,7 @@ The NatioID Mobile App enables users to:
 - View and manage their **Digital Citizen ID**.
 - Apply for new or updated records.
 - Access linked services (benefits, voting, complaints).
+- Manage complaints and benefits.
 - Trigger emergency SOS requests.
 - Interact with government services directly from their devices.
 
@@ -31,7 +34,12 @@ It emphasizes **privacy**, **offline readiness**, and **secure local storage**, 
 A secure on-device representation of the user’s identity with profile details and a unique ID code.
 
 ### 🗳️ Voting Services
-The mobile app provides a user-friendly interface for secure, decentralized participation in elections or public surveys, acting as a mock voting system to demonstrate these capabilities. Register to vote, view active elections, and securely cast your ballot in national or organizational elections.
+The mobile app provides a user-friendly interface for secure, decentralized participation in elections or public surveys, acting as a mock voting system to demonstrate these capabilities. Key features include:
+- Voter registration
+- Election creation & management
+- Live result monitoring
+- Candidate campaign pages
+- Securely cast your ballot in national or organizational elections.
 
 ### 📄 Linked Documents
 Ability to manage attached records such as birth certificates, voter cards, and driver’s licenses.
@@ -42,8 +50,18 @@ Instant access to emergency assistance — can transmit a user’s location to a
 ### 🧾 Application & Renewal Forms
 Apply for ID registration, renewal, or updates using universal, non-country-specific data fields.
 
+---
+
+## 🔐 Security & Privacy Features
+- **Login/Auth System**: Admin-only access for secure management.
+- **Data Validation & Error Handling**: Ensures data integrity and robust user experience.
+- **Role-Based Access**: Differentiates between admin and citizen privileges.
+- **Rate Limiting / Anti-Abuse**: Basic measures to prevent abuse.
+
+Features like screenshot prevention and data blur on sensitive pages are planned for future releases.
 
 ---
+
 
 ## 🌐 Internationalization (i18n)
 
@@ -116,7 +134,7 @@ npx expo build:android -t apk
 The generated file can be shared and installed directly on Android devices.
 
 🛠️ Deployment
-Currently, the mobile app is distributed via APK for local testing.
+Currently, the mobile app is distributed via APK for local testing. You can download the APK directly from the Live Demo Links section.
 It is not published to app stores yet but can be easily adapted for Play Store or TestFlight release through EAS Build.
 
 🧠 Contributing
