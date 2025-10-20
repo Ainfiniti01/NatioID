@@ -8,7 +8,7 @@ This application is built with **React Native (Expo)** and designed to work seam
 
 ## 🚀 Live Demo Links
 - **Web App**: [https://natio-id.vercel.app/](https://natio-id.vercel.app/)
-- **Mobile App**: APK download or Expo link (coming soon)
+- **Mobile App**: [APK download or Expo link (coming soon)](https://expo.dev/accounts/ainfiniti/projects/natioid/builds/f66d46db-007c-4da7-9cda-db6db180115e)
 
 ---
 
@@ -31,7 +31,7 @@ It emphasizes **privacy**, **offline readiness**, and **secure local storage**, 
 A secure on-device representation of the user’s identity with profile details and a unique ID code.
 
 ### 🗳️ Voting Services
-Mock voting system to demonstrate secure, decentralized participation in elections or public surveys.
+The mobile app provides a user-friendly interface for secure, decentralized participation in elections or public surveys, acting as a mock voting system to demonstrate these capabilities. Register to vote, view active elections, and securely cast your ballot in national or organizational elections.
 
 ### 📄 Linked Documents
 Ability to manage attached records such as birth certificates, voter cards, and driver’s licenses.
@@ -41,6 +41,7 @@ Instant access to emergency assistance — can transmit a user’s location to a
 
 ### 🧾 Application & Renewal Forms
 Apply for ID registration, renewal, or updates using universal, non-country-specific data fields.
+
 
 ---
 

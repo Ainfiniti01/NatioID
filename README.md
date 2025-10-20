@@ -7,7 +7,7 @@ It enables administrators and citizens to manage identification records, view ap
 
 ## 🚀 Live Demo Links
 - **Web App**: [https://natio-id.vercel.app/](https://natio-id.vercel.app/)
-- **Mobile App**: APK download or Expo link (coming soon)
+- **Mobile App**: [APK download or Expo link (coming soon)](https://expo.dev/accounts/ainfiniti/projects/natioid/builds/f66d46db-007c-4da7-9cda-db6db180115e)
 
 ---
 
@@ -38,7 +38,8 @@ This application is built with **React Native (Expo)** and designed to work seam
 ### 📱 Mobile App Features
 - View and manage their **Digital Citizen ID**.
 - Apply for new or updated records.
-- Access linked services (benefits, voting, complaints).
+- The mobile app provides a user-friendly interface for secure, decentralized participation in elections or public surveys, acting as a mock voting system to demonstrate these capabilities.
+- Access linked services (benefits, complaints).
 - Trigger emergency SOS requests.
 - Interact with government services directly from their devices.
 

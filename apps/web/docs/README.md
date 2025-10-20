@@ -7,7 +7,7 @@ It enables administrators and citizens to manage identification records, view ap
 
 ## 🚀 Live Demo Links
 - **Web App**: [https://natio-id.vercel.app/](https://natio-id.vercel.app/)
-- **Mobile App**: APK download or Expo link (coming soon)
+- **Mobile App**: [APK download or Expo link (coming soon)](https://expo.dev/accounts/ainfiniti/projects/natioid/builds/f66d46db-007c-4da7-9cda-db6db180115e)
 
 ---
 
@@ -24,7 +24,7 @@ It is built purely on the frontend (no backend APIs or SSR), optimized for deplo
 ### 🧭 Admin Interface
 - Manage and review citizen applications.
 - Monitor system settings and activity logs.
-- Access voting, benefits, complaints, and reporting modules.
+- Access voting, benefits, complaints, and reporting modules, including managing mobile app voting features.
 
 ### 👤 Citizen Portal
 - View personal ID records and linked details.
@@ -37,6 +37,7 @@ It is built purely on the frontend (no backend APIs or SSR), optimized for deplo
 - Scalable structure with reusable UI components.
 - Multi-language structure (ready for localization).
 - Optimized static export using **Vite** for fast load and deployment.
+- Includes features for managing voting processes, accessible via both web and mobile interfaces.
 
 ---
 
