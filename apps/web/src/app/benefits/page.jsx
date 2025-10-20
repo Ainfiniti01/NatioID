@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Gift, 
   Users, 
@@ -16,6 +16,7 @@ import {
   Target,
   MoreVertical
 } from 'lucide-react';
+import EditBenefitModal from '../../components/EditBenefitModal';
 
 export default function BenefitsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,8 +24,10 @@ export default function BenefitsPage() {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [selectedBenefit, setSelectedBenefit] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-  const [benefits] = useState([
+  const initialBenefits = [
     {
       id: 'BEN001',
       title: 'Youth Employment Support',
@@ -39,7 +42,8 @@ export default function BenefitsPage() {
       startDate: '2024-01-01',
       endDate: '2024-12-31',
       applicationDeadline: '2024-11-30',
-      createdAt: '2024-01-01T00:00:00Z'
+      createdAt: '2024-01-01T00:00:00Z',
+      attachment: null,
     },
     {
       id: 'BEN002',
@@ -89,7 +93,9 @@ export default function BenefitsPage() {
       applicationDeadline: '2024-12-01',
       createdAt: '2024-07-01T00:00:00Z'
     }
-  ]);
+  ];
+
+  const [benefits, setBenefits] = useState(initialBenefits);
 
   const [stats] = useState({
     totalBenefits: 23,
@@ -328,17 +334,12 @@ export default function BenefitsPage() {
                     >
                       View Details
                     </button>
-                    <div className="flex items-center space-x-2">
-                      <button className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100">
-                        <Edit className="h-4 w-4" />
-                      </button>
-                      <button className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100">
-                        <Download className="h-4 w-4" />
-                      </button>
-                      <button className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100">
-                        <MoreVertical className="h-4 w-4" />
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => window.location.href = `/benefits/${benefit.id}/applicants`}
+                      className="text-[#004040] hover:text-[#003030] dark:text-[#ECBE07] dark:hover:text-[#D4AA06] text-sm font-medium"
+                    >
+                      View Applicants
+                    </button>
                   </div>
                 </div>
               </div>
@@ -433,13 +434,15 @@ export default function BenefitsPage() {
 
               <div className="mt-6 flex justify-end space-x-3">
                 <button
-                  onClick={() => setSelectedBenefit(null)}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600"
+                  onClick={() => setShowDeleteConfirmation(true)}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-red-700 hover:bg-red-500 dark:bg-red-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-red-500"
                 >
-                  Close
+                  Delete Benefit
                 </button>
                 <button
-                  onClick={() => alert('Benefit would be edited')}
+                  onClick={() => {
+                    setIsEditModalOpen(true);
+                  }}
                   className="px-4 py-2 bg-[#004040] text-white rounded-md hover:bg-[#003030] dark:bg-[#ECBE07] dark:text-black dark:hover:bg-[#D4AA06]"
                 >
                   Edit Benefit
@@ -448,6 +451,60 @@ export default function BenefitsPage() {
             </div>
           </div>
         )}
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirmation && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Confirm Deletion</h3>
+              <p className="text-gray-700 dark:text-gray-300 mb-6">
+                Are you sure you want to delete the benefit "{selectedBenefit?.title}"? This action cannot be undone.
+              </p>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowDeleteConfirmation(false)}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    setBenefits(prevBenefits => prevBenefits.filter(b => b.id !== selectedBenefit?.id));
+                    setSelectedBenefit(null);
+                    setShowDeleteConfirmation(false);
+                  }}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Benefit Modal */}
+        <EditBenefitModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setSelectedBenefit(null); // Clear selected benefit when modal closes
+          }}
+          benefitDetails={selectedBenefit}
+          onSave={(updatedBenefit) => {
+            console.log('Saving benefit:', updatedBenefit);
+            setBenefits(prevBenefits =>
+              prevBenefits.map(b => (b.id === updatedBenefit.id ? updatedBenefit : b))
+            );
+            setIsEditModalOpen(false);
+            setSelectedBenefit(null);
+          }}
+          onDelete={(benefitId) => {
+            console.log('Deleting benefit with ID:', benefitId);
+            setBenefits(prevBenefits => prevBenefits.filter(b => b.id !== benefitId));
+            setIsEditModalOpen(false);
+            setSelectedBenefit(null);
+          }}
+        />
 
         {/* Create Benefit Modal */}
         {showCreateModal && (

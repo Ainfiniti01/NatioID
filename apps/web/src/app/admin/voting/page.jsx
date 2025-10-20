@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { 
   Vote, 
   Search, 
@@ -18,10 +19,17 @@ import {
   Trash2,
   CheckCircle
 } from 'lucide-react';
+import LaunchElectionModal from '../../../components/LaunchElectionModal';
+import DeleteElectionModal from '../../../components/DeleteElectionModal';
 
 export default function AdminVotingDashboard() {
+  const navigate = useNavigate(); // Initialize useNavigate
   const [loading, setLoading] = useState(true);
   const [elections, setElections] = useState([]);
+  const [isLaunchModalOpen, setIsLaunchModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedElectionForLaunch, setSelectedElectionForLaunch] = useState(null);
+  const [selectedElectionForDelete, setSelectedElectionForDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,7 +41,7 @@ export default function AdminVotingDashboard() {
       setElections([
         {
           id: 1,
-          name: 'Presidential Election 2025',
+          name: 'Presidential Election 2025 - Nigeria',
           startDate: '2025-03-10',
           endDate: '2025-03-12',
           status: 'active',
@@ -42,7 +50,7 @@ export default function AdminVotingDashboard() {
         },
         {
           id: 2,
-          name: 'Gubernatorial Election - Lagos',
+          name: 'Gubernatorial Election - California, USA',
           startDate: '2025-04-01',
           endDate: '2025-04-03',
           status: 'scheduled',
@@ -51,7 +59,7 @@ export default function AdminVotingDashboard() {
         },
         {
           id: 3,
-          name: 'Local Council Election - Abuja',
+          name: 'Local Council Election - Paris, France',
           startDate: '2024-12-01',
           endDate: '2024-12-02',
           status: 'completed',
@@ -60,7 +68,7 @@ export default function AdminVotingDashboard() {
         },
         {
           id: 4,
-          name: 'Senatorial By-Election - Rivers',
+          name: 'Senatorial By-Election - Tokyo, Japan',
           startDate: '2025-01-20',
           endDate: '2025-01-21',
           status: 'completed',
@@ -69,7 +77,7 @@ export default function AdminVotingDashboard() {
         },
         {
           id: 5,
-          name: 'Youth Council Leadership',
+          name: 'Youth Council Leadership - Berlin, Germany',
           startDate: '2025-05-01',
           endDate: '2025-05-05',
           status: 'scheduled',
@@ -110,32 +118,44 @@ export default function AdminVotingDashboard() {
   const paginatedElections = filteredElections.slice(startIndex, startIndex + electionsPerPage);
 
   const handleElectionAction = (electionId, action) => {
+    const election = elections.find(e => e.id === electionId);
+    if (!election) return;
+
     switch (action) {
       case 'launch':
-        if (confirm('Are you sure you want to launch this election?')) {
-          setElections(elections.map(election => 
-            election.id === electionId ? { ...election, status: 'active' } : election
-          ));
-        }
-        break;
-      case 'schedule':
-        alert('Schedule election functionality');
+        setSelectedElectionForLaunch({ ...election, candidatesCount: election.candidates });
+        setIsLaunchModalOpen(true);
         break;
       case 'manage_candidates':
-        alert('Manage candidates functionality');
+        navigate(`/admin/voting/${electionId}/candidates`);
         break;
       case 'monitor_results':
-        alert('Monitor live results functionality');
+        navigate(`/admin/voting/${electionId}/results`);
         break;
       case 'edit':
-        alert('Edit election functionality');
+        navigate(`/admin/voting/${electionId}/edit`);
         break;
       case 'delete':
-        if (confirm('Are you sure you want to delete this election? This action cannot be undone.')) {
-          setElections(elections.filter(election => election.id !== electionId));
-        }
+        setSelectedElectionForDelete(election);
+        setIsDeleteModalOpen(true);
         break;
     }
+  };
+
+  const handleConfirmLaunch = () => {
+    setElections(elections.map(e => 
+      e.id === selectedElectionForLaunch.id ? { ...e, status: 'active' } : e
+    ));
+    setIsLaunchModalOpen(false);
+    setSelectedElectionForLaunch(null);
+    alert(`Election "${selectedElectionForLaunch.name}" launched successfully!`);
+  };
+
+  const handleConfirmDelete = () => {
+    setElections(elections.filter(e => e.id !== selectedElectionForDelete.id));
+    setIsDeleteModalOpen(false);
+    setSelectedElectionForDelete(null);
+    alert(`Election "${selectedElectionForDelete.name}" deleted successfully!`);
   };
 
   const exportElections = () => {
@@ -168,7 +188,7 @@ export default function AdminVotingDashboard() {
             
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => alert('Launch New Election')}
+                onClick={() => navigate('/admin/voting/new')} // Redirect to new election creation page
                 className="bg-[#004040] hover:bg-[#003030] text-white px-4 py-2 rounded-lg flex items-center"
               >
                 <Play className="h-4 w-4 mr-2" />
@@ -444,6 +464,22 @@ export default function AdminVotingDashboard() {
           )}
         </div>
       </div>
+
+      {/* Modals */}
+      <LaunchElectionModal
+        isOpen={isLaunchModalOpen}
+        onClose={() => setIsLaunchModalOpen(false)}
+        election={selectedElectionForLaunch}
+        onConfirm={handleConfirmLaunch}
+      />
+
+      <DeleteElectionModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        itemType="Election"
+        itemName={selectedElectionForDelete?.name}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 }

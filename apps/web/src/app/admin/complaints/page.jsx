@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { ViewComplaint, MarkAsInReview, EscalateComplaint, AutoResolveDuplicates, DeleteComplaint } from '@/components/Modal';
 import { 
   MessageSquare, 
   Search, 
@@ -15,7 +16,11 @@ import {
   Phone,
   Eye,
   Edit,
-  Trash2
+  Trash2,
+  Bot,
+  Wand2,
+  CheckCheck,
+  Sparkles
 } from 'lucide-react';
 
 export default function AdminComplaintsPage() {
@@ -24,6 +29,12 @@ export default function AdminComplaintsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [escalatedComplaints, setEscalatedComplaints] = useState({}); // { complaintId: true/false }
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isEscalateModalOpen, setIsEscalateModalOpen] = useState(false);
+  const [isResolveDuplicateModalOpen, setIsResolveDuplicateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const complaintsPerPage = 10;
 
@@ -111,43 +122,47 @@ export default function AdminComplaintsPage() {
   const startIndex = (currentPage - 1) * complaintsPerPage;
   const paginatedComplaints = filteredComplaints.slice(startIndex, startIndex + complaintsPerPage);
 
-  const handleComplaintAction = (complaintId, action) => {
+  const handleComplaintAction = (complaint, action) => {
+    setSelectedComplaint(complaint);
     switch (action) {
       case 'view':
-        alert(`Viewing complaint ${complaintId}`);
+        setIsViewModalOpen(true);
         break;
       case 'mark_in_review':
-        if (confirm('Mark this complaint as "In Review"?')) {
-          setComplaints(complaints.map(c => 
-            c.id === complaintId ? { ...c, status: 'in_review' } : c
-          ));
-        }
-        break;
-      case 'mark_resolved':
-        if (confirm('Mark this complaint as "Resolved"?')) {
-          setComplaints(complaints.map(c => 
-            c.id === complaintId ? { ...c, status: 'resolved' } : c
-          ));
-        }
-        break;
-      case 'delete':
-        if (confirm('Are you sure you want to delete this complaint? This action cannot be undone.')) {
-          setComplaints(complaints.filter(c => c.id !== complaintId));
-        }
+        setIsReviewModalOpen(true);
         break;
       case 'escalate':
-        if (confirm(`Are you sure you want to escalate complaint ${complaintId} to another department?`)) {
-          setEscalatedComplaints(prev => ({ ...prev, [complaintId]: true }));
-          alert(`Complaint ${complaintId} has been escalated.`);
-        }
+        setIsEscalateModalOpen(true);
         break;
       case 'auto_resolve_duplicate':
-        if (confirm(`Are you sure you want to auto-resolve duplicate for complaint ${complaintId}?`)) {
-          setComplaints(complaints.filter(c => c.id !== complaintId)); // Simulate removing the duplicate
-          alert(`Complaint ${complaintId} has been auto-resolved as a duplicate.`);
-        }
+        setIsResolveDuplicateModalOpen(true);
+        break;
+      case 'delete':
+        setIsDeleteModalOpen(true);
         break;
     }
+  };
+
+  const handleMarkAsInReview = () => {
+    setComplaints(complaints.map(c =>
+      c.id === selectedComplaint.id ? { ...c, status: 'in_review' } : c
+    ));
+    setIsReviewModalOpen(false);
+  };
+
+  const handleEscalate = () => {
+    setEscalatedComplaints(prev => ({ ...prev, [selectedComplaint.id]: true }));
+    setIsEscalateModalOpen(false);
+  };
+
+  const handleAutoResolveDuplicate = () => {
+    setComplaints(complaints.filter(c => c.id !== selectedComplaint.id));
+    setIsResolveDuplicateModalOpen(false);
+  };
+
+  const handleDelete = () => {
+    setComplaints(complaints.filter(c => c.id !== selectedComplaint.id));
+    setIsDeleteModalOpen(false);
   };
 
   const exportComplaints = () => {
@@ -340,39 +355,30 @@ export default function AdminComplaintsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => handleComplaintAction(complaint.id, 'view')}
-                          className="text-[#004040] hover:text-[#003030]"
+                          onClick={() => handleComplaintAction(complaint, 'view')}
+                          className="text-[#1adbdb] hover:text-[#003030]"
                           title="View Details"
                         >
                           <Eye className="h-4 w-4" />
                         </button>
                         {complaint.status === 'pending' && (
                           <button
-                            onClick={() => handleComplaintAction(complaint.id, 'mark_in_review')}
+                            onClick={() => handleComplaintAction(complaint, 'mark_in_review')}
                             className="text-blue-600 hover:text-blue-900"
                             title="Mark In Review"
                           >
                             <Clock className="h-4 w-4" />
                           </button>
                         )}
-                        {(complaint.status === 'pending' || complaint.status === 'in_review') && (
-                          <button
-                            onClick={() => handleComplaintAction(complaint.id, 'mark_resolved')}
-                            className="text-green-600 hover:text-green-900"
-                            title="Mark Resolved"
-                          >
-                            <CheckCircle className="h-4 w-4" />
-                          </button>
-                        )}
                         <button
-                          onClick={() => handleComplaintAction(complaint.id, 'delete')}
+                          onClick={() => handleComplaintAction(complaint, 'delete')}
                           className="text-red-600 hover:text-red-900"
                           title="Delete Complaint"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleComplaintAction(complaint.id, 'escalate')}
+                          onClick={() => handleComplaintAction(complaint, 'escalate')}
                           className={`hover:text-purple-900 ${escalatedComplaints[complaint.id] ? 'text-purple-400 cursor-not-allowed' : 'text-purple-600'}`}
                           title={escalatedComplaints[complaint.id] ? 'Complaint Escalated' : 'Escalate Complaint'}
                           disabled={escalatedComplaints[complaint.id]}
@@ -380,11 +386,11 @@ export default function AdminComplaintsPage() {
                           <Mail className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleComplaintAction(complaint.id, 'auto_resolve_duplicate')}
+                          onClick={() => handleComplaintAction(complaint, 'auto_resolve_duplicate')}
                           className="text-orange-600 hover:text-orange-900"
                           title="Auto-resolve Duplicate"
                         >
-                          <Trash2 className="h-4 w-4" /> {/* Using Trash2 for auto-resolve, can be changed */}
+                          <Wand2 className="h-4 w-4" /> {/* Using Trash2 for auto-resolve, can be changed */}
                         </button>
                       </div>
                     </td>
@@ -459,6 +465,34 @@ export default function AdminComplaintsPage() {
           )}
         </div>
       </div>
+      <ViewComplaint 
+        isOpen={isViewModalOpen} 
+        onClose={() => setIsViewModalOpen(false)} 
+        complaint={selectedComplaint}
+      />
+      <MarkAsInReview 
+        isOpen={isReviewModalOpen} 
+        onClose={() => setIsReviewModalOpen(false)} 
+        onMarkAsInReview={handleMarkAsInReview}
+        complaint={selectedComplaint} 
+      />
+      <EscalateComplaint 
+        isOpen={isEscalateModalOpen} 
+        onClose={() => setIsEscalateModalOpen(false)} 
+        onEscalate={handleEscalate}
+        complaint={selectedComplaint} 
+      />
+      <AutoResolveDuplicates 
+        isOpen={isResolveDuplicateModalOpen} 
+        onClose={() => setIsResolveDuplicateModalOpen(false)} 
+        onAutoResolve={handleAutoResolveDuplicate}
+        complaint={selectedComplaint} 
+      />
+      <DeleteComplaint
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDelete={handleDelete}
+      />
     </div>
   );
 }

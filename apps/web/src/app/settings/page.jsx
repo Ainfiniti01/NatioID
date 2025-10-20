@@ -79,14 +79,6 @@ export default function SettingsPage() {
   });
   const [saveStatus, setSaveStatus] = useState('');
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
   const handleSettingChange = (category, key, value) => {
     setSettings(prev => ({
       ...prev,

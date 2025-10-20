@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
 export default function AdminDashboard() {
-  const { darkMode, toggleDarkMode } = useTheme();
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [activeTimeFilter, setActiveTimeFilter] = useState('week');
 
   const stats = [
@@ -190,7 +190,7 @@ export default function AdminDashboard() {
                     onClick={toggleDarkMode}
                     className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 dark:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-[#004040] dark:focus:ring-[#ECBE07] focus:ring-offset-2"
                   >
-                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${darkMode ? 'translate-x-6' : 'translate-x-1'}`} />
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isDarkMode ? 'translate-x-6' : 'translate-x-1'}`} />
                   </button>
                 </div>
                 

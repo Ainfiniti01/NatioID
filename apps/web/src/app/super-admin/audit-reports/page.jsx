@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from '@/context/ThemeContext';
 import React, { useState, useEffect } from 'react';
 import { 
   Shield, 
@@ -19,10 +20,12 @@ import {
   RefreshCw,
   Plus,
   TrendingUp,
-  TrendingDown
+  TrendingDown,
+  ArrowLeft
 } from 'lucide-react';
 
 export default function AuditReportsPage() {
+  const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [reports, setReports] = useState([]);
@@ -180,17 +183,17 @@ export default function AuditReportsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+      <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} flex items-center justify-center`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading audit reports...</p>
+          <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading audit reports...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-6">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} p-6`}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -198,13 +201,13 @@ export default function AuditReportsPage() {
             <div className="flex items-center mb-2">
               <button
                 onClick={() => window.location.href = '/super-admin/dashboard'}
-                className="mr-4 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className={`mr-4 p-2 ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} rounded-lg transition-colors`}
               >
-                <Shield className="h-6 w-6 text-red-600" />
+                <ArrowLeft className="h-6 w-6 text-gray-600 dark:text-gray-300" />
               </button>
-              <h1 className="text-3xl font-bold text-gray-900">Audit Reports</h1>
+              <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Audit Reports</h1>
             </div>
-            <p className="text-gray-600">Generate and manage compliance and audit reports</p>
+            <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Generate and manage compliance and audit reports</p>
           </div>
           
           <button 
@@ -222,16 +225,16 @@ export default function AuditReportsPage() {
         </div>
 
         {/* Report Configuration */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Report Configuration</h2>
+        <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 mb-8 border`}>
+          <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Report Configuration</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Report Period</label>
+              <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>Report Period</label>
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                className={`w-full px-3 py-2 border ${isDarkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500`}
               >
                 <option value="monthly">Monthly Report</option>
                 <option value="quarterly">Quarterly Report</option>
@@ -241,21 +244,21 @@ export default function AuditReportsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+              <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>Date Range</label>
               <input
                 type="text"
                 value={getDateRange(selectedPeriod)}
                 readOnly
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                className={`w-full px-3 py-2 border ${isDarkMode ? 'bg-gray-700 border-gray-600 text-gray-300' : 'border-gray-300 bg-gray-50 text-gray-600'} rounded-lg`}
               />
             </div>
           </div>
 
           <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">Report Categories</label>
+            <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-3`}>Report Categories</label>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
               {reportCategories.map((category) => (
-                <label key={category.id} className="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                <label key={category.id} className={`flex items-start space-x-3 p-3 border ${isDarkMode ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-200 hover:bg-gray-50'} rounded-lg cursor-pointer`}>
                   <input
                     type="checkbox"
                     checked={selectedCategories.includes(category.id)}
@@ -269,8 +272,8 @@ export default function AuditReportsPage() {
                     className="mt-1 rounded border-gray-300 text-red-600 focus:ring-red-500"
                   />
                   <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-900">{category.name}</div>
-                    <div className="text-xs text-gray-500">{category.description}</div>
+                    <div className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{category.name}</div>
+                    <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{category.description}</div>
                   </div>
                 </label>
               ))}
@@ -280,11 +283,11 @@ export default function AuditReportsPage() {
 
         {/* Key Metrics Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">{reportStats.totalUsers?.toLocaleString()}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Total Users</p>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{reportStats.totalUsers?.toLocaleString()}</p>
                 <div className="flex items-center mt-2">
                   <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
                   <span className="text-sm text-green-600">+{reportStats.newUsersThisMonth} this month</span>
@@ -294,24 +297,24 @@ export default function AuditReportsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Applications</p>
-                <p className="text-2xl font-bold text-gray-900">{reportStats.totalApplications?.toLocaleString()}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Applications</p>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{reportStats.totalApplications?.toLocaleString()}</p>
                 <div className="flex items-center mt-2">
-                  <span className="text-sm text-gray-600">{reportStats.approvedApplications?.toLocaleString()} approved</span>
+                  <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{reportStats.approvedApplications?.toLocaleString()} approved</span>
                 </div>
               </div>
               <FileText className="h-8 w-8 text-green-600" />
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Security Events</p>
-                <p className="text-2xl font-bold text-gray-900">{reportStats.securityIncidents}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Security Events</p>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{reportStats.securityIncidents}</p>
                 <div className="flex items-center mt-2">
                   <TrendingDown className="h-4 w-4 text-green-500 mr-1" />
                   <span className="text-sm text-green-600">-2 from last month</span>
@@ -321,11 +324,11 @@ export default function AuditReportsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">System Uptime</p>
-                <p className="text-2xl font-bold text-gray-900">{reportStats.systemUptime}%</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>System Uptime</p>
+                <p className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{reportStats.systemUptime}%</p>
                 <div className="flex items-center mt-2">
                   <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
                   <span className="text-sm text-green-600">Excellent</span>
@@ -337,11 +340,11 @@ export default function AuditReportsPage() {
         </div>
 
         {/* Generated Reports */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
+        <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md border overflow-hidden`}>
+          <div className={`px-6 py-4 border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold text-gray-900">Generated Reports</h2>
-              <div className="flex items-center space-x-2 text-sm text-gray-500">
+              <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Generated Reports</h2>
+              <div className={`flex items-center space-x-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                 <RefreshCw className="h-4 w-4" />
                 <span>Last updated: {new Date().toLocaleTimeString()}</span>
               </div>
@@ -350,43 +353,43 @@ export default function AuditReportsPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Period</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Generated</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className={`px-6 py-3 text-left text-xs font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} uppercase tracking-wider`}>Report</th>
+                  <th className={`px-6 py-3 text-left text-xs font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} uppercase tracking-wider`}>Type</th>
+                  <th className={`px-6 py-3 text-left text-xs font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} uppercase tracking-wider`}>Period</th>
+                  <th className={`px-6 py-3 text-left text-xs font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} uppercase tracking-wider`}>Generated</th>
+                  <th className={`px-6 py-3 text-left text-xs font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} uppercase tracking-wider`}>Status</th>
+                  <th className={`px-6 py-3 text-left text-xs font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} uppercase tracking-wider`}>Size</th>
+                  <th className={`px-6 py-3 text-left text-xs font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} uppercase tracking-wider`}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className={`${isDarkMode ? 'bg-gray-800 divide-gray-700' : 'bg-white divide-gray-200'} divide-y`}>
                 {reports.map((report) => (
-                  <tr key={report.id} className="hover:bg-gray-50">
+                  <tr key={report.id} className={`${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'}`}>
                     <td className="px-6 py-4">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">{report.title}</div>
-                        <div className="text-sm text-gray-500">{report.id}</div>
+                        <div className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{report.title}</div>
+                        <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{report.id}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">
+                    <td className={`px-6 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-900'} capitalize`}>
                       {report.type.replace('_', ' ')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 capitalize">{report.period}</div>
-                      <div className="text-sm text-gray-500">{report.dateRange}</div>
+                      <div className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-900'} capitalize`}>{report.period}</div>
+                      <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{report.dateRange}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{report.generatedAt}</div>
-                      <div className="text-sm text-gray-500">by {report.generatedBy}</div>
+                      <div className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>{report.generatedAt}</div>
+                      <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>by {report.generatedBy}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(report.status)}`}>
                         {report.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className={`px-6 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                       {report.fileSize} ({report.format})
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -416,15 +419,15 @@ export default function AuditReportsPage() {
           {reports.length === 0 && (
             <div className="text-center py-12">
               <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No reports generated</h3>
-              <p className="text-gray-500">Generate your first audit report to get started.</p>
+              <h3 className={`text-lg font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-2`}>No reports generated</h3>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Generate your first audit report to get started.</p>
             </div>
           )}
         </div>
 
         {/* Report Templates */}
-        <div className="mt-8 bg-white rounded-xl shadow-md p-6 border border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Report Templates</h2>
+        <div className={`mt-8 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
+          <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Quick Report Templates</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <button
@@ -433,13 +436,13 @@ export default function AuditReportsPage() {
                 setSelectedCategories(['admin_activity', 'security_events']);
                 handleGenerateReport();
               }}
-              className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors text-left"
+              className={`p-4 border-2 ${isDarkMode ? 'border-gray-700 hover:border-blue-500 hover:bg-gray-700' : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'} rounded-lg transition-colors text-left`}
             >
               <div className="flex items-center mb-2">
                 <BarChart3 className="h-5 w-5 text-blue-600 mr-2" />
-                <span className="font-medium text-gray-900">Monthly Security Report</span>
+                <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Monthly Security Report</span>
               </div>
-              <p className="text-sm text-gray-600">Admin activities and security events for the current month</p>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Admin activities and security events for the current month</p>
             </button>
 
             <button
@@ -448,13 +451,13 @@ export default function AuditReportsPage() {
                 setSelectedCategories(['all']);
                 handleGenerateReport();
               }}
-              className="p-4 border-2 border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors text-left"
+              className={`p-4 border-2 ${isDarkMode ? 'border-gray-700 hover:border-green-500 hover:bg-gray-700' : 'border-gray-200 hover:border-green-300 hover:bg-green-50'} rounded-lg transition-colors text-left`}
             >
               <div className="flex items-center mb-2">
                 <PieChart className="h-5 w-5 text-green-600 mr-2" />
-                <span className="font-medium text-gray-900">Quarterly Compliance</span>
+                <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Quarterly Compliance</span>
               </div>
-              <p className="text-sm text-gray-600">Complete system overview for regulatory compliance</p>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Complete system overview for regulatory compliance</p>
             </button>
 
             <button
@@ -463,24 +466,24 @@ export default function AuditReportsPage() {
                 setSelectedCategories(['security_events', 'fraud_detection']);
                 handleGenerateReport();
               }}
-              className="p-4 border-2 border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors text-left"
+              className={`p-4 border-2 ${isDarkMode ? 'border-gray-700 hover:border-purple-500 hover:bg-gray-700' : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50'} rounded-lg transition-colors text-left`}
             >
               <div className="flex items-center mb-2">
                 <Shield className="h-5 w-5 text-purple-600 mr-2" />
-                <span className="font-medium text-gray-900">Annual Security Audit</span>
+                <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Annual Security Audit</span>
               </div>
-              <p className="text-sm text-gray-600">Comprehensive security analysis and fraud detection summary</p>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Comprehensive security analysis and fraud detection summary</p>
             </button>
           </div>
         </div>
 
         {/* Compliance Notice */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className={`mt-6 ${isDarkMode ? 'bg-gray-800 border-blue-500' : 'bg-blue-50 border-blue-200'} border rounded-lg p-4`}>
           <div className="flex items-start">
             <CheckCircle className="h-5 w-5 text-blue-600 mr-2 mt-0.5" />
             <div>
-              <h3 className="text-blue-800 font-medium">Compliance Standards</h3>
-              <p className="text-blue-700 text-sm mt-1">
+              <h3 className={`${isDarkMode ? 'text-blue-300' : 'text-blue-800'} font-medium`}>Compliance Standards</h3>
+              <p className={`${isDarkMode ? 'text-blue-400' : 'text-blue-700'} text-sm mt-1`}>
                 All reports are generated in compliance with Country Data Protection Regulation (NDPR) 
                 and international audit standards. Reports contain anonymized data where required.
               </p>

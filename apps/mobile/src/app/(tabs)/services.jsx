@@ -217,11 +217,55 @@ export default function ServicesScreen() {
             flexWrap: 'wrap',
             justifyContent: 'space-between'
           }}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => router.push('/sos')}
               style={{
                 width: '48%',
                 backgroundColor: colors.emergency,
+                borderRadius: 12,
+                padding: 20,
+                marginBottom: 12,
+                alignItems: 'center'
+              }}
+            >
+              <Ionicons name="" size={32} color="#FFFFFF" style={{ marginBottom: 8 }} />
+              <Text style={{
+                fontFamily: 'Inter_600SemiBold',
+                fontSize: 14,
+                color: '#FFFFFF',
+                textAlign: 'center'
+              }}>
+                
+              </Text>
+            </TouchableOpacity> */}
+
+            <TouchableOpacity
+              onPress={() => router.push('/digital-id')}
+              style={{
+                width: '48%',
+                backgroundColor: colors.primary,
+                borderRadius: 12,
+                padding: 20,
+                marginBottom: 12,
+                alignItems: 'center'
+              }}
+            >
+              <Ionicons name="people" size={32} color="#FFFFFF" style={{ marginBottom: 8 }} />
+              <Text style={{
+                fontFamily: 'Inter_600SemiBold',
+                fontSize: 14,
+                color: '#FFFFFF',
+                textAlign: 'center'
+              }}>
+                Voting
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => router.push('/digital-id')}
+              style={{
+                width: '48%',
+                backgroundColor: colors.primary,
                 borderRadius: 12,
                 padding: 20,
                 marginBottom: 12,

@@ -35,7 +35,7 @@ export default function ReportsPage() {
       type: 'lost_id',
       status: 'pending',
       description: 'I lost my national ID card while traveling from Lagos to Abuja. Last seen at the airport security checkpoint.',
-      location: 'Murtala Muhammed Airport, Lagos',
+      location: 'Murtala Muhammed Airport, Lagos, Nigeria',
       reportedBy: 'Adebayo Johnson',
       userId: 'USR001',
       email: 'adebayo.johnson@email.com',
@@ -52,11 +52,11 @@ export default function ReportsPage() {
       type: 'stolen_documents',
       status: 'in_progress',
       description: 'My passport, driver\'s license, and birth certificate were stolen from my vehicle parked outside the shopping mall.',
-      location: 'Ikeja City Mall, Lagos State',
-      reportedBy: 'Fatima Mohammed',
+      location: 'Westfield Mall, California, USA',
+      reportedBy: 'John Smith',
       userId: 'USR002',
-      email: 'fatima.mohammed@email.com',
-      phone: '+234 901 234 5678',
+      email: 'john.smith@email.com',
+      phone: '+1 202 555 0101',
       createdAt: '2024-09-14T14:20:00Z',
       updatedAt: '2024-09-16T09:15:00Z',
       attachments: ['police_report.pdf', 'vehicle_photo.jpg'],
@@ -69,11 +69,11 @@ export default function ReportsPage() {
       type: 'stolen_id',
       status: 'resolved',
       description: 'My national identity card was pickpocketed while using public transport during rush hour.',
-      location: 'Bus Rapid Transit Station, Victoria Island',
-      reportedBy: 'Chioma Okafor',
+      location: 'Châtelet–Les Halles Station, Paris, France',
+      reportedBy: 'Marie Dubois',
       userId: 'USR003',
-      email: 'chioma.okafor@email.com',
-      phone: '+234 802 345 6789',
+      email: 'marie.dubois@email.com',
+      phone: '+33 1 23 45 67 89',
       createdAt: '2024-09-10T08:45:00Z',
       updatedAt: '2024-09-18T16:30:00Z',
       attachments: ['statement.pdf'],
@@ -346,9 +346,9 @@ export default function ReportsPage() {
                           <Eye className="h-4 w-4" />
                         </button>
                         <div className="relative">
-                          <button className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100">
+                          {/* <button className="text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100">
                             <MoreVertical className="h-4 w-4" />
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </td>

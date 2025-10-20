@@ -20,14 +20,6 @@ export default function SuperAdminLoginPage() {
     password: '',
     twoFactorCode: ''
   });
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState(1); // 1: credentials, 2: 2FA
   const [isLoading, setIsLoading] = useState(false);

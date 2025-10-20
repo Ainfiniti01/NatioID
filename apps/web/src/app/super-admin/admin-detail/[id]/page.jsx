@@ -72,18 +72,56 @@ export default function AdminDetailPage() {
         },
         {
           id: '2',
-          name: 'Sarah Manager',
-          email: 'sarah.manager@natioid.gov.ng',
+          name: 'Muhammad Manager',
+          email: 'Muhammad.manager@natioid.gov.us',
           role: 'Manager',
           department: 'Complaints',
           status: 'Active',
           lastLogin: '2025-01-19 08:15 AM',
           created: '2024-11-15',
           totalActions: 892,
-          phone: '+234 802 345 6789',
+          phone: '+234 202 555 0101',
           joinedDate: '2024-11-15'
         },
-        // Add more dummy admins as needed
+        {
+          id: '3',
+          name: 'Mike Reviewer',
+          email: 'mike.reviewer@natioid.gov.fr',
+          role: 'Reviewer',
+          department: 'Applications',
+          status: 'Active',
+          lastLogin: '2025-01-19 07:45 AM',
+          created: '2024-11-20',
+          totalActions: 654,
+          phone: '+33 1 23 45 67 89',
+          joinedDate: '2024-11-20'
+        },
+        {
+          id: '4',
+          name: 'Lisa Admin',
+          email: 'lisa.admin@natioid.gov.jp',
+          role: 'Admin',
+          department: 'News & Benefits',
+          status: 'Suspended',
+          lastLogin: '2025-01-17 02:30 PM',
+          created: '2024-10-10',
+          totalActions: 423,
+          phone: '+81 3 4567 8901',
+          joinedDate: '2024-10-10'
+        },
+        {
+          id: '5',
+          name: 'David Viewer',
+          email: 'david.viewer@natioid.gov.de',
+          role: 'Viewer',
+          department: 'Reports',
+          status: 'Inactive',
+          lastLogin: '2025-01-15 11:20 AM',
+          created: '2024-09-01',
+          totalActions: 156,
+          phone: '+49 30 12345678',
+          joinedDate: '2024-09-01'
+        }
       ];
       const foundAdmin = dummyAdmins.find(a => a.id === adminId);
       setAdmin(foundAdmin);

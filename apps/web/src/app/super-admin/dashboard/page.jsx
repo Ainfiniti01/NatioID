@@ -1,5 +1,6 @@
 'use client';
 
+import { useTheme } from '@/context/ThemeContext';
 import React, { useState, useEffect } from 'react';
 import { 
   Shield, 
@@ -19,6 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function SuperAdminDashboard() {
+  const { isDarkMode } = useTheme();
   const [stats, setStats] = useState({});
   const [recentActivity, setRecentActivity] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -135,26 +137,26 @@ export default function SuperAdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+      <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} flex items-center justify-center`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading dashboard...</p>
+          <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-6">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-white'} p-6`}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
             <div className="flex items-center mb-2">
               <Shield className="h-8 w-8 text-red-600 mr-3" />
-              <h1 className="text-3xl font-bold text-gray-900">Super Admin Dashboard</h1>
+              <h1 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Super Admin Dashboard</h1>
             </div>
-            <p className="text-gray-600">NatioID System Administration & Oversight</p>
+            <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>NatioID System Administration & Oversight</p>
           </div>
           
           <div className="flex space-x-3">
@@ -178,18 +180,18 @@ export default function SuperAdminDashboard() {
         {/* Alerts */}
         {alerts.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Security Alerts</h2>
+            <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Security Alerts</h2>
             <div className="space-y-3">
               {alerts.map((alert) => (
-                <div key={alert.id} className={`border-l-4 p-4 rounded-lg ${getSeverityColor(alert.severity)}`}>
+                <div key={alert.id} className={`border-l-4 p-4 rounded-lg ${getSeverityColor(alert.severity)} ${isDarkMode ? 'bg-opacity-10' : ''}`}>
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{alert.title}</h3>
-                      <p className="text-sm text-gray-600 mt-1">{alert.message}</p>
+                      <h3 className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{alert.title}</h3>
+                      <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'} mt-1`}>{alert.message}</p>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-xs text-gray-500">{alert.timestamp}</span>
-                      <button className="text-gray-400 hover:text-gray-600">
+                      <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{alert.timestamp}</span>
+                      <button className={`${isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}>
                         <Eye className="h-4 w-4" />
                       </button>
                     </div>
@@ -202,64 +204,64 @@ export default function SuperAdminDashboard() {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">Total Admins</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.totalAdmins}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>Total Admins</p>
+                <p className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{stats.totalAdmins}</p>
                 <div className="flex items-center mt-2">
                   <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
                   <span className="text-sm text-green-600">+3 this month</span>
                 </div>
               </div>
-              <div className="p-3 bg-blue-100 rounded-lg">
+              <div className={`p-3 ${isDarkMode ? 'bg-blue-900' : 'bg-blue-100'} rounded-lg`}>
                 <Users className="h-8 w-8 text-blue-600" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">Active Admins</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.activeAdmins}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>Active Admins</p>
+                <p className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{stats.activeAdmins}</p>
                 <div className="flex items-center mt-2">
-                  <span className="text-sm text-gray-500">Last 24 hours</span>
+                  <span className={`text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>Last 24 hours</span>
                 </div>
               </div>
-              <div className="p-3 bg-green-100 rounded-lg">
+              <div className={`p-3 ${isDarkMode ? 'bg-green-900' : 'bg-green-100'} rounded-lg`}>
                 <UserCheck className="h-8 w-8 text-green-600" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">Suspended Admins</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.suspendedAdmins}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>Suspended Admins</p>
+                <p className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{stats.suspendedAdmins}</p>
                 <div className="flex items-center mt-2">
                   <TrendingDown className="h-4 w-4 text-orange-500 mr-1" />
                   <span className="text-sm text-orange-600">-1 this week</span>
                 </div>
               </div>
-              <div className="p-3 bg-red-100 rounded-lg">
+              <div className={`p-3 ${isDarkMode ? 'bg-red-900' : 'bg-red-100'} rounded-lg`}>
                 <UserX className="h-8 w-8 text-red-600" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+          <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">System Uptime</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.systemUptime}</p>
+                <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>System Uptime</p>
+                <p className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{stats.systemUptime}</p>
                 <div className="flex items-center mt-2">
                   <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
                   <span className="text-sm text-green-600">Excellent</span>
                 </div>
               </div>
-              <div className="p-3 bg-emerald-100 rounded-lg">
+              <div className={`p-3 ${isDarkMode ? 'bg-emerald-900' : 'bg-emerald-100'} rounded-lg`}>
                 <Activity className="h-8 w-8 text-emerald-600" />
               </div>
             </div>
@@ -269,9 +271,9 @@ export default function SuperAdminDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Recent Admin Activity */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+            <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Admin Activity</h2>
+                <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Recent Admin Activity</h2>
                 <button 
                   onClick={() => window.location.href = '/super-admin/activity-logs'}
                   className="text-red-600 hover:text-red-700 text-sm font-medium"
@@ -282,14 +284,14 @@ export default function SuperAdminDashboard() {
               
               <div className="space-y-4">
                 {recentActivity.map((activity) => (
-                  <div key={activity.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={activity.id} className={`flex items-center justify-between p-4 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'} rounded-lg`}>
                     <div className="flex items-center space-x-4">
                       {getActionIcon(activity.type)}
                       <div>
-                        <p className="font-medium text-gray-900">
-                          {activity.admin} <span className="font-normal text-gray-600">{activity.action}</span>
+                        <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                          {activity.admin} <span className={`font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{activity.action}</span>
                         </p>
-                        <div className="flex items-center space-x-2 text-sm text-gray-500">
+                        <div className={`flex items-center space-x-2 text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
                           <span>{activity.target}</span>
                           <span>•</span>
                           <span>{activity.ip}</span>
@@ -297,7 +299,7 @@ export default function SuperAdminDashboard() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-gray-500">{activity.timestamp}</p>
+                      <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{activity.timestamp}</p>
                     </div>
                   </div>
                 ))}
@@ -307,33 +309,33 @@ export default function SuperAdminDashboard() {
 
           {/* Quick Actions */}
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+            <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
+              <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>Quick Actions</h2>
               <div className="space-y-3">
                 <button 
                   onClick={() => window.location.href = '/super-admin/admin-accounts'}
-                  className="w-full flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                  className={`w-full flex items-center p-3 ${isDarkMode ? 'bg-blue-900 hover:bg-blue-800' : 'bg-blue-50 hover:bg-blue-100'} rounded-lg transition-colors`}
                 >
                   <Users className="h-5 w-5 text-blue-600 mr-3" />
                   <span className="text-blue-700 font-medium">Manage Admin Accounts</span>
                 </button>
                 <button 
                   onClick={() => window.location.href = '/super-admin/activity-logs'}
-                  className="w-full flex items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
+                  className={`w-full flex items-center p-3 ${isDarkMode ? 'bg-green-900 hover:bg-green-800' : 'bg-green-50 hover:bg-green-100'} rounded-lg transition-colors`}
                 >
                   <FileText className="h-5 w-5 text-green-600 mr-3" />
                   <span className="text-green-700 font-medium">View Activity Logs</span>
                 </button>
                 <button 
                   onClick={() => window.location.href = '/super-admin/system-settings'}
-                  className="w-full flex items-center p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
+                  className={`w-full flex items-center p-3 ${isDarkMode ? 'bg-purple-900 hover:bg-purple-800' : 'bg-purple-50 hover:bg-purple-100'} rounded-lg transition-colors`}
                 >
                   <Settings className="h-5 w-5 text-purple-600 mr-3" />
                   <span className="text-purple-700 font-medium">System Settings</span>
                 </button>
                 <button 
                   onClick={() => window.location.href = '/super-admin/audit-reports'}
-                  className="w-full flex items-center p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
+                  className={`w-full flex items-center p-3 ${isDarkMode ? 'bg-orange-900 hover:bg-orange-800' : 'bg-orange-50 hover:bg-orange-100'} rounded-lg transition-colors`}
                 >
                   <FileText className="h-5 w-5 text-orange-600 mr-3" />
                   <span className="text-orange-700 font-medium">Generate Audit Report</span>
@@ -342,22 +344,22 @@ export default function SuperAdminDashboard() {
             </div>
 
             {/* System Status */}
-            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">System Overview</h2>
+            <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl shadow-md p-6 border`}>
+              <h2 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'} mb-4`}>System Overview</h2>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Total Citizens</span>
-                  <span className="font-semibold text-gray-900">{stats.totalUsers?.toLocaleString()}</span>
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Total Citizens</span>
+                  <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{stats.totalUsers?.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">New Today</span>
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>New Today</span>
                   <span className="font-semibold text-green-600">+{stats.newUsersToday}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Pending Applications</span>
+                  <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Pending Applications</span>
                   <span className="font-semibold text-orange-600">{stats.pendingApplications?.toLocaleString()}</span>
                 </div>
-                <div className="pt-2 border-t border-gray-200">
+                <div className={`pt-2 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}`}>
                   <div className="flex items-center justify-center space-x-2 text-green-600">
                     <CheckCircle className="h-4 w-4" />
                     <span className="text-sm font-medium">All Systems Operational</span>
@@ -369,7 +371,7 @@ export default function SuperAdminDashboard() {
         </div>
 
         {/* Footer */}
-        <div className="mt-8 text-center text-sm text-gray-500">
+        <div className={`mt-8 text-center text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
           <p>Super Admin Access • Last Login: {new Date().toLocaleString()} • Session Timeout: 3 minutes</p>
         </div>
       </div>

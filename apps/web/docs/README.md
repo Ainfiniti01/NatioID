@@ -5,6 +5,12 @@ It enables administrators and citizens to manage identification records, view ap
 
 ---
 
+## 🚀 Live Demo Links
+- **Web App**: [https://natio-id.vercel.app/](https://natio-id.vercel.app/)
+- **Mobile App**: APK download or Expo link (coming soon)
+
+---
+
 ## 🌍 Overview
 
 NatioID serves as a **presentation-ready prototype** for a national digital ID system.  
@@ -152,13 +158,27 @@ API layer improvements
 
 Mobile-Web synchronization
 
-📜 License
-This project is for educational and presentation purposes.
-All rights reserved © 2025 NatioID.
+📌 Disclaimer
+
+> **Disclaimer:**  
+> This project is a working prototype developed solely for presentation and proposal purposes.  
+> All features, content, and functionalities are intended for demonstration only and may not represent a final or deployable product.  
+> Please contact the author before any reuse, sharing, or distribution.
+
+---
+
+## 📄 LICENSE (Custom — All Rights Reserved)
+
+© 2025 Ainfiniti. All rights reserved.
+
+This software, including all code, designs, and documentation, is the intellectual property of Ainfiniti.
+
+It is provided for demonstration, evaluation, and proposal purposes only. Unauthorized reproduction, modification, distribution, or commercial use of any part of this project is strictly prohibited.
+
+This project may not be copied, reproduced, or used in whole or in part without explicit written permission from the owner.
 
 🧠 Author
 Abdulazeez Adam.A
 Project Lead & Full-Stack Developer
 Email: abdulazeezadam09@gmail.com
 GitHub: https://github.com/Ainfiniti01
-

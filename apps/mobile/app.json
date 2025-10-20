@@ -1,28 +1,30 @@
 {
   "expo": {
-    "name": "Create mobile app",
+    "name": "NatioID",
+    "slug": "natioid",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.jpg",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
-    "scheme": "digitalcitizenid",
+    "scheme": "natioid",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.natioid.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.jpg",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
-      "package": "xyz.create.CreateExpoEnvironment"
+      "package": "com.natioid.app"
     },
     "plugins": [
       [
@@ -34,7 +36,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.jpg",
+          "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain"
         }
@@ -67,7 +69,7 @@
         "sitemap": false
       },
       "eas": {
-        "projectId": "a56282ec-acc7-4b08-bb39-a3c4ddd0062f"
+        "projectId": "257bbd60-dd23-4417-aef0-0f43dc2397b5"
       }
     },
     "runtimeVersion": {

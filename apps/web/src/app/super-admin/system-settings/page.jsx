@@ -20,21 +20,14 @@ import {
   Mail,
   ArrowLeft,
   Moon,
+  Sun,
   Smartphone
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 export default function SystemSettingsPage() {
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('branding');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -534,7 +527,7 @@ export default function SystemSettingsPage() {
           <div className="flex items-center space-x-4">
             {/* Theme Toggle */}
             <button 
-              onClick={() => toggleDarkMode(!isDarkMode)}
+              onClick={toggleDarkMode}
               className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100"
               title="Toggle theme"
             >

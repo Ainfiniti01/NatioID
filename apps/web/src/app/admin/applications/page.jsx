@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { ApproveRejectApplication, RequestMoreInfo } from '@/components/Modal';
 import { 
   FileText, 
   Search, 
@@ -23,6 +24,9 @@ export default function AdminApplicationsPage() {
   const [typeFilter, setTypeFilter] = useState('all');
   const [selectedApplications, setSelectedApplications] = useState([]);
   const [requestedInfoApplications, setRequestedInfoApplications] = useState({}); // { appId: true/false }
+  const [isApproveRejectModalOpen, setIsApproveRejectModalOpen] = useState(false);
+  const [isRequestInfoModalOpen, setIsRequestInfoModalOpen] = useState(false);
+  const [selectedApplication, setSelectedApplication] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const applicationsPerPage = 10;
 
@@ -37,43 +41,43 @@ export default function AdminApplicationsPage() {
           submissionDate: '2024-01-15',
           status: 'pending',
           nin: '12345678901',
-          location: 'Lagos, Country',
+          location: 'Lagos, Nigeria',
         },
         {
           id: 2,
-          citizenName: 'Kemi Okafor',
+          citizenName: 'John Smith',
           applicationType: 'renewal',
           submissionDate: '2024-02-08',
           status: 'approved',
-          nin: '23456789012',
-          location: 'Abuja, Country',
+          nin: '98765432109',
+          location: 'Washington D.C., USA',
         },
         {
           id: 3,
-          citizenName: 'Uche Okoro',
+          citizenName: 'Marie Dubois',
           applicationType: 'lost',
           submissionDate: '2024-01-20',
           status: 'rejected',
-          nin: '34567890123',
-          location: 'Port Harcourt, Country',
+          nin: '12345098765',
+          location: 'Paris, France',
         },
         {
           id: 4,
-          citizenName: 'Fatima Hassan',
+          citizenName: 'Yuki Tanaka',
           applicationType: 'update',
           submissionDate: '2024-01-10',
           status: 'pending',
-          nin: '45678901234',
-          location: 'Kano, Country',
+          nin: '54321678901',
+          location: 'Tokyo, Japan',
         },
         {
           id: 5,
-          citizenName: 'Ibrahim Musa',
+          citizenName: 'Klaus Müller',
           applicationType: 'new',
           submissionDate: '2024-02-01',
           status: 'approved',
-          nin: '56789012345',
-          location: 'Kaduna, Country',
+          nin: '10987654321',
+          location: 'Berlin, Germany',
         },
         {
           id: 6,
@@ -82,25 +86,25 @@ export default function AdminApplicationsPage() {
           submissionDate: '2024-02-05',
           status: 'pending',
           nin: '67890123456',
-          location: 'Enugu, Country',
+          location: 'Enugu, Nigeria',
         },
         {
           id: 7,
-          citizenName: 'Yusuf Abdullahi',
+          citizenName: 'Emily White',
           applicationType: 'lost',
           submissionDate: '2024-01-25',
           status: 'approved',
-          nin: '78901234567',
-          location: 'Maiduguri, Country',
+          nin: '23456789012',
+          location: 'Chicago, USA',
         },
         {
           id: 8,
-          citizenName: 'Blessing Okonkwo',
+          citizenName: 'Lucas Martin',
           applicationType: 'update',
           submissionDate: '2024-01-30',
           status: 'pending',
-          nin: '89012345678',
-          location: 'Owerri, Country',
+          nin: '34567890123',
+          location: 'Marseille, France',
         }
       ]);
       setLoading(false);
@@ -137,29 +141,36 @@ export default function AdminApplicationsPage() {
   const startIndex = (currentPage - 1) * applicationsPerPage;
   const paginatedApplications = filteredApplications.slice(startIndex, startIndex + applicationsPerPage);
 
-  const handleApplicationAction = (appId, action) => {
+  const handleApplicationAction = (app, action) => {
+    setSelectedApplication(app);
     switch (action) {
       case 'approve':
-        if (confirm('Are you sure you want to approve this application?')) {
-          setApplications(applications.map(app => 
-            app.id === appId ? { ...app, status: 'approved' } : app
-          ));
-        }
-        break;
       case 'reject':
-        if (confirm('Are you sure you want to reject this application?')) {
-          setApplications(applications.map(app => 
-            app.id === appId ? { ...app, status: 'rejected' } : app
-          ));
-        }
+        setIsApproveRejectModalOpen(true);
         break;
       case 'request_info':
-        if (confirm('Are you sure you want to request more information for this application?')) {
-          setRequestedInfoApplications(prev => ({ ...prev, [appId]: true }));
-          alert(`Notification/Email sent to citizen for application ${appId} requesting more information.`);
-        }
+        setIsRequestInfoModalOpen(true);
         break;
     }
+  };
+
+  const handleApprove = () => {
+    setApplications(applications.map(app => 
+      app.id === selectedApplication.id ? { ...app, status: 'approved' } : app
+    ));
+    setIsApproveRejectModalOpen(false);
+  };
+
+  const handleReject = () => {
+    setApplications(applications.map(app => 
+      app.id === selectedApplication.id ? { ...app, status: 'rejected' } : app
+    ));
+    setIsApproveRejectModalOpen(false);
+  };
+
+  const handleRequestInfo = () => {
+    setRequestedInfoApplications(prev => ({ ...prev, [selectedApplication.id]: true }));
+    setIsRequestInfoModalOpen(false);
   };
 
   const handleSelectApplication = (appId) => {
@@ -437,21 +448,21 @@ export default function AdminApplicationsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => handleApplicationAction(app.id, 'approve')}
+                          onClick={() => handleApplicationAction(app, 'approve')}
                           className="text-green-600 hover:text-green-900"
                           title="Approve Application"
                         >
                           <CheckCircle className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleApplicationAction(app.id, 'reject')}
+                          onClick={() => handleApplicationAction(app, 'reject')}
                           className="text-red-600 hover:text-red-900"
                           title="Reject Application"
                         >
                           <XCircle className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleApplicationAction(app.id, 'request_info')}
+                          onClick={() => handleApplicationAction(app, 'request_info')}
                           className={`hover:text-blue-900 ${requestedInfoApplications[app.id] ? 'text-blue-400 cursor-not-allowed' : 'text-blue-600'}`}
                           title={requestedInfoApplications[app.id] ? 'Info Requested' : 'Request More Info'}
                           disabled={requestedInfoApplications[app.id]}
@@ -531,6 +542,19 @@ export default function AdminApplicationsPage() {
           )}
         </div>
       </div>
+      <ApproveRejectApplication 
+        isOpen={isApproveRejectModalOpen} 
+        onClose={() => setIsApproveRejectModalOpen(false)} 
+        onApprove={handleApprove}
+        onReject={handleReject}
+        application={selectedApplication}
+      />
+      <RequestMoreInfo
+        isOpen={isRequestInfoModalOpen}
+        onClose={() => setIsRequestInfoModalOpen(false)}
+        onSendRequest={handleRequestInfo}
+        application={selectedApplication}
+      />
     </div>
   );
 }
