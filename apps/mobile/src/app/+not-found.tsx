@@ -101,7 +101,8 @@ function NotFoundScreen() {
   };
 
   const handleCreatePage = useCallback(() => {
-    if (typeof window !== 'undefined' && window.parent && window.parent !== window) {
+    // Ensure missingPath is a valid string before proceeding
+    if (missingPath && typeof window !== 'undefined' && window.parent && window.parent !== window) {
       window.parent.postMessage(
         {
           type: 'sandbox:web:create',
