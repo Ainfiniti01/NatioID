@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Search, Filter, Download, User, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { ArrowLeft, Search, Filter, Download, User, CheckCircle, XCircle, Clock, Users, Calendar } from 'lucide-react';
 export default function BenefitApplicantsPage() {
   const pathSegments = window.location.pathname.split('/');
   const benefitId = pathSegments[pathSegments.indexOf('benefits') + 1]; // Get benefit ID from URL

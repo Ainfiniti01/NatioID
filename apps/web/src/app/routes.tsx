@@ -27,7 +27,8 @@ const generatedExtendedRoutes: ExtendedRouteConfig[] = [
   { path: 'admin/voting/:new-election', componentPath: 'admin/voting/New-Election.jsx' },
   { path: 'applications', componentPath: 'applications/page.jsx' },
   { path: 'benefits', componentPath: 'benefits/page.jsx' },
-  { path: 'admin/benefits/:id/applicants', componentPath: 'benefits/[id]/applicants/page.jsx' },
+  { path: 'benefits/:id/applicants', componentPath: 'benefits/[id]/applicants/page.jsx' }, // Added this route
+  // { path: 'admin/benefits/:id/applicants', componentPath: 'benefits/[id]/applicants/page.jsx' },
   { path: 'complaints', componentPath: 'complaints/page.jsx' },
   { path: 'dashboard', componentPath: 'dashboard/page.jsx' },
   { path: 'logs', componentPath: 'logs/page.jsx' },
