@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Search, Filter, Download, User, CheckCircle, XCircle, Clock, Users, Calendar } from 'lucide-react';
-export default function BenefitApplicantsPage() {
-  const pathSegments = window.location.pathname.split('/');
-  const benefitId = pathSegments[pathSegments.indexOf('benefits') + 1]; // Get benefit ID from URL
+export default function BenefitApplicantsPage({ params }) {
+  const benefitId = params.id;
 
   // Placeholder for benefit title - in a real app, you'd fetch this based on benefitId
   const [benefitTitle, setBenefitTitle] = useState('Youth Employment Support');

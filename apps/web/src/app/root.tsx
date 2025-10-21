@@ -372,7 +372,7 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
-          <ClientOnly loader={() => children} />
+          {children}
         </ThemeProvider>
         <HotReloadIndicator />
         <Toaster position="bottom-right" />
@@ -385,5 +385,11 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ClientOnly
+      loader={() => {
+        return <Outlet />;
+      }}
+    />
+  );
 }
