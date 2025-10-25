@@ -226,8 +226,8 @@ export default function AdminApplicationsPage() {
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:h-16">
+            <div className="flex items-center mb-4 sm:mb-0">
               <button 
                 onClick={() => window.history.back()}
                 className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
@@ -237,31 +237,31 @@ export default function AdminApplicationsPage() {
               <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Application Management</h1>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto overflow-x-auto">
               {selectedApplications.length > 0 && (
                 <>
                   <button
                     onClick={handleBulkApprove}
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center"
+                    className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
-                    Approve Selected ({selectedApplications.length})
+                    Approve ({selectedApplications.length})
                   </button>
                   <button
                     onClick={handleBulkRequestInfo}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
                   >
                   <Info className="h-4 w-4 mr-2" />
-                    Request Info Selected ({selectedApplications.length})
+                    Request Info ({selectedApplications.length})
                   </button>
                 </>
               )}
               <button
                 onClick={exportApplications}
-                className="bg-[#004040] hover:bg-[#003030] text-white px-4 py-2 rounded-lg flex items-center"
+                className="bg-[#004040] hover:bg-[#003030] text-white px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
               >
                 <Download className="h-4 w-4 mr-2" />
-                Export {selectedApplications.length > 0 ? `Selected (${selectedApplications.length})` : ''}
+                Export {selectedApplications.length > 0 ? `(${selectedApplications.length})` : ''}
               </button>
             </div>
           </div>
@@ -371,9 +371,10 @@ export default function AdminApplicationsPage() {
           </div>
         </div>
 
-        {/* Applications Table */}
+        {/* Applications List */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-          <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -475,6 +476,74 @@ export default function AdminApplicationsPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card List */}
+          <div className="md:hidden">
+            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
+              <input
+                type="checkbox"
+                className="form-checkbox h-4 w-4 text-[#004040] rounded"
+                checked={selectedApplications.length === paginatedApplications.length && paginatedApplications.length > 0}
+                onChange={handleSelectAllApplications}
+              />
+              <span className="ml-2 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">Select All</span>
+            </div>
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              {paginatedApplications.map((app) => (
+                <div key={app.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <div className="flex items-start">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox h-4 w-4 text-[#004040] rounded mt-1"
+                      checked={selectedApplications.includes(app.id)}
+                      onChange={() => handleSelectApplication(app.id)}
+                    />
+                    <div className="ml-4 flex-1">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">{app.citizenName}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">NIN: {app.nin}</p>
+                        </div>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(app.status)}`}>
+                          {getStatusIcon(app.status)}
+                          <span className="ml-1 capitalize">{app.status}</span>
+                        </span>
+                      </div>
+                      <div className="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <p><strong className="font-medium">Type:</strong> <span className="capitalize">{app.applicationType}</span></p>
+                        <p><strong className="font-medium">Date:</strong> {app.submissionDate}</p>
+                        <p><strong className="font-medium">Location:</strong> {app.location}</p>
+                      </div>
+                      <div className="mt-3 flex items-center justify-end space-x-3">
+                        <button
+                          onClick={() => handleApplicationAction(app, 'approve')}
+                          className="text-green-600 hover:text-green-900"
+                          title="Approve Application"
+                        >
+                          <CheckCircle className="h-5 w-5" />
+                        </button>
+                        <button
+                          onClick={() => handleApplicationAction(app, 'reject')}
+                          className="text-red-600 hover:text-red-900"
+                          title="Reject Application"
+                        >
+                          <XCircle className="h-5 w-5" />
+                        </button>
+                        <button
+                          onClick={() => handleApplicationAction(app, 'request_info')}
+                          className={`hover:text-blue-900 ${requestedInfoApplications[app.id] ? 'text-blue-400 cursor-not-allowed' : 'text-blue-600'}`}
+                          title={requestedInfoApplications[app.id] ? 'Info Requested' : 'Request More Info'}
+                          disabled={requestedInfoApplications[app.id]}
+                        >
+                          <Info className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Pagination */}

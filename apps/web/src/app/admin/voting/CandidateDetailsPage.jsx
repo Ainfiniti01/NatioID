@@ -86,39 +86,39 @@ export default function CandidateDetailsPage() {
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:h-16">
+            <div className="flex items-center mb-4 sm:mb-0">
               <button 
                 onClick={() => navigate(-1)}
                 className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               >
                 ←
               </button>
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Candidate Details: {candidate.name}
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
+                Candidate: {candidate.name}
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto overflow-x-auto">
               <button
                 onClick={handlePreviewCampaign}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg flex items-center"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
               >
                 <Eye className="h-4 w-4 mr-2" />
-                Preview Campaign
+                Preview
               </button>
               <button
                 onClick={handleSave}
-                className="bg-[#004040] hover:bg-[#003030] text-white px-4 py-2 rounded-lg flex items-center"
+                className="bg-[#004040] hover:bg-[#003030] text-white px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
               >
                 <Save className="h-4 w-4 mr-2" />
-                Save Changes
+                Save
               </button>
               <button
                 onClick={handleDelete}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center"
+                className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
-                Delete Candidate
+                Delete
               </button>
             </div>
           </div>

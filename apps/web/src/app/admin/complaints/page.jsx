@@ -182,8 +182,8 @@ export default function AdminComplaintsPage() {
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:h-16">
+            <div className="flex items-center mb-4 sm:mb-0">
               <button 
                 onClick={() => window.history.back()}
                 className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
@@ -193,10 +193,10 @@ export default function AdminComplaintsPage() {
               <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Complaint Management</h1>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto">
               <button
                 onClick={exportComplaints}
-                className="bg-[#004040] hover:bg-[#003030] text-white px-4 py-2 rounded-lg flex items-center"
+                className="bg-[#004040] hover:bg-[#003030] text-white px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Export
@@ -294,9 +294,10 @@ export default function AdminComplaintsPage() {
           </div>
         </div>
 
-        {/* Complaints Table */}
+        {/* Complaints List */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-          <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -390,7 +391,7 @@ export default function AdminComplaintsPage() {
                           className="text-orange-600 hover:text-orange-900"
                           title="Auto-resolve Duplicate"
                         >
-                          <Wand2 className="h-4 w-4" /> {/* Using Trash2 for auto-resolve, can be changed */}
+                          <Wand2 className="h-4 w-4" />
                         </button>
                       </div>
                     </td>
@@ -398,6 +399,69 @@ export default function AdminComplaintsPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card List */}
+          <div className="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+            {paginatedComplaints.map((complaint) => (
+              <div key={complaint.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{complaint.citizenName}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{complaint.citizenEmail}</p>
+                  </div>
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(complaint.status)}`}>
+                    {getStatusIcon(complaint.status)}
+                    <span className="ml-1 capitalize">{complaint.status.replace('_', ' ')}</span>
+                  </span>
+                </div>
+                <div className="mt-2">
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{complaint.subject}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 truncate">{complaint.description}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{complaint.submissionDate}</p>
+                </div>
+                <div className="mt-3 flex items-center justify-end space-x-3">
+                  <button
+                    onClick={() => handleComplaintAction(complaint, 'view')}
+                    className="text-[#1adbdb] hover:text-[#003030]"
+                    title="View Details"
+                  >
+                    <Eye className="h-5 w-5" />
+                  </button>
+                  {complaint.status === 'pending' && (
+                    <button
+                      onClick={() => handleComplaintAction(complaint, 'mark_in_review')}
+                      className="text-blue-600 hover:text-blue-900"
+                      title="Mark In Review"
+                    >
+                      <Clock className="h-5 w-5" />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleComplaintAction(complaint, 'delete')}
+                    className="text-red-600 hover:text-red-900"
+                    title="Delete Complaint"
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => handleComplaintAction(complaint, 'escalate')}
+                    className={`hover:text-purple-900 ${escalatedComplaints[complaint.id] ? 'text-purple-400 cursor-not-allowed' : 'text-purple-600'}`}
+                    title={escalatedComplaints[complaint.id] ? 'Complaint Escalated' : 'Escalate Complaint'}
+                    disabled={escalatedComplaints[complaint.id]}
+                  >
+                    <Mail className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => handleComplaintAction(complaint, 'auto_resolve_duplicate')}
+                    className="text-orange-600 hover:text-orange-900"
+                    title="Auto-resolve Duplicate"
+                  >
+                    <Wand2 className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Pagination */}

@@ -318,8 +318,8 @@ export default function AdminUsersPage() {
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 shadow">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:h-16">
+              <div className="flex items-center mb-4 sm:mb-0">
                 <button 
                   onClick={() => window.history.back()}
                   className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
@@ -329,10 +329,10 @@ export default function AdminUsersPage() {
                 <h1 className="text-xl font-semibold text-gray-900 dark:text-white">User Management</h1>
               </div>
               
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto">
                 <button
                   onClick={exportUsers}
-                  className="bg-[#004040] hover:bg-[#003030] text-white px-4 py-2 rounded-lg flex items-center"
+                  className="bg-[#004040] hover:bg-[#003030] text-white px-3 py-2 text-sm rounded-lg flex items-center flex-shrink-0"
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Export
@@ -430,9 +430,10 @@ export default function AdminUsersPage() {
             </div>
           </div>
 
-          {/* Users Table */}
+          {/* Users List */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-            <div className="overflow-x-auto">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-700">
                   <tr>
@@ -515,13 +516,6 @@ export default function AdminUsersPage() {
                           >
                             <Eye className="h-4 w-4" />
                           </button>
-                          {/* <button
-                            onClick={() => handleUserAction(user, 'edit')}
-                            className=""
-                            title="Edit User"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </button> */}
                           {user.status === 'verified' ? (
                             <button
                               onClick={() => handleUserAction(user, 'suspend')}
@@ -552,6 +546,66 @@ export default function AdminUsersPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile Card List */}
+            <div className="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+              {paginatedUsers.map((user) => (
+                <div key={user.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center">
+                      <div className="h-10 w-10 rounded-full bg-[#004040] flex items-center justify-center">
+                        <span className="text-sm font-medium text-white">{user.name.charAt(0)}</span>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+                      </div>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(user.status)}`}>
+                      {getStatusIcon(user.status)}
+                      <span className="ml-1 capitalize">{user.status}</span>
+                    </span>
+                  </div>
+                  <div className="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                    <p><strong className="font-medium">NIN:</strong> {user.nin}</p>
+                    <p><strong className="font-medium">Last Login:</strong> {user.lastLogin}</p>
+                  </div>
+                  <div className="mt-3 flex items-center justify-end space-x-3">
+                    <button
+                      onClick={() => handleUserAction(user, 'view')}
+                      className="text-blue-600 hover:text-blue-900"
+                      title="View Details"
+                    >
+                      <Eye className="h-5 w-5" />
+                    </button>
+                    {user.status === 'verified' ? (
+                      <button
+                        onClick={() => handleUserAction(user, 'suspend')}
+                        className="text-red-600 hover:text-red-900"
+                        title="Suspend User"
+                      >
+                        <UserX className="h-5 w-5" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleUserAction(user, 'activate')}
+                        className="text-green-600 hover:text-green-900"
+                        title="Activate User"
+                      >
+                        <UserCheck className="h-5 w-5" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleUserAction(user, 'delete')}
+                      className="text-red-600 hover:text-red-900"
+                      title="Delete User"
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Pagination */}
